@@ -11,7 +11,7 @@ class StoreSubfamilyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,9 @@ class StoreSubfamilyRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string|max:255|unique:subfamilies,name',
+            'slug' => 'required|string|max:255|unique:subfamilies,slug',
+            'description' => 'nullable|string',
         ];
     }
 }

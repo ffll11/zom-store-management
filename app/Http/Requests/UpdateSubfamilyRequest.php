@@ -11,7 +11,7 @@ class UpdateSubfamilyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateSubfamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:subfamilies,name,' . $this->subfamily->id,
+            'slug' => 'required|string|max:255|unique:subfamilies,slug,' . $this->subfamily->id,
+            'description' => 'nullable|string',
+            'family_id' => 'required|exists:families,id',
         ];
     }
 }

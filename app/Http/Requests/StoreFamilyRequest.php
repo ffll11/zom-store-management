@@ -11,7 +11,7 @@ class StoreFamilyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,9 @@ class StoreFamilyRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string|max:255|unique:families,name',
+            'slug' => 'required|string|max:255|unique:families,slug',
+            'description' => 'nullable|string',
         ];
     }
 }

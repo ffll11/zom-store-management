@@ -12,7 +12,13 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        \App\Models\Role::factory(10)->create();
+        \App\Models\Role::create([
+            'name' => 'Admin',
+            'description' => 'Description for Admin Role',
+        ]);
+        \App\Models\Role::create([
+            'name' => 'Employee',
+            'description' => 'Description for Employee Role',
+        ]);
     }
 }

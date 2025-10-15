@@ -11,7 +11,7 @@ class StoreBrandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,9 @@ class StoreBrandRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string|max:255|unique:brands,name',
+            'slug' => 'required|string|max:255|unique:brands,slug',
+            'description' => 'nullable|string',
         ];
     }
 }
