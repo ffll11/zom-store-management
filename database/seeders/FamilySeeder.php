@@ -13,5 +13,6 @@ class FamilySeeder extends Seeder
     public function run(): void
     {
         //
+        \App\Models\Family::factory(10)->create();
     }
 }

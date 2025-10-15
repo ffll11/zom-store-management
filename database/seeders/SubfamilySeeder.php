@@ -13,5 +13,6 @@ class SubfamilySeeder extends Seeder
     public function run(): void
     {
         //
+        \App\Models\Subfamily::factory(10)->create();
     }
 }

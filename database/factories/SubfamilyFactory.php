@@ -18,6 +18,10 @@ class SubfamilyFactory extends Factory
     {
         return [
             //
+            'name' => $this->faker->company(),
+            'slug' => $this->faker->slug(),
+            'description' => $this->faker->text(),
+            'family_id' => \App\Models\Family::factory(),
         ];
     }
 }
