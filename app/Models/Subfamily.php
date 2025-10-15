@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Subfamily extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'slug', 'description'];
+    public function family(){
+        return $this->belongsTo(Family::class);
+    }
 }

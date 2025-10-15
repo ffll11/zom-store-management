@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Family extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'slug', 'description', 'subcategory_id'];
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    public function subcategory(){
+        return $this->belongsTo(Subcategory::class);
+    }
 }
