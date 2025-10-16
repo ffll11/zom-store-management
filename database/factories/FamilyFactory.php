@@ -21,6 +21,7 @@ class FamilyFactory extends Factory
             'name' => $this->faker->company(),
             'slug' => $this->faker->slug(),
             'description' => $this->faker->text(),
+            'subcategory_id' => \App\Models\Subcategory::factory(),
 
         ];
     }
