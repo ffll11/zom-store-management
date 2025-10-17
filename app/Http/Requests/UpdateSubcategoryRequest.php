@@ -22,8 +22,8 @@ class UpdateSubcategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:subcategories,name,' . $this->subcategory->id,
-            'slug' => 'required|string|max:255|unique:subcategories,slug,' . $this->subcategory->id,
+            'name' => 'sometimes|string|max:255|unique:subcategories,name,' . $this->subcategory->id,
+            'slug' => 'sometimes|string|max:255|unique:subcategories,slug,' . $this->subcategory->id,
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
         ];

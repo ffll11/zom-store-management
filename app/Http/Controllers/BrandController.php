@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Repositories\BrandRepository;
+use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
@@ -21,17 +21,20 @@ class BrandController extends Controller
 
     public function store(StoreBrandRequest $request)
     {
+        Log::info("Storing new brand with data: " . json_encode($request->validated()));
         return $this->brandRepository->create($request->validated());
     }
 
-    public function show(Brand $brand)
+    public function show($id)
     {
-        return $this->brandRepository->find($brand->id);
+       return $this->brandRepository->find($id);
     }
 
     public function update(UpdateBrandRequest $request, $id)
     {
-        return $this->brandRepository->update($id, $request->validated());
+        $changedData = collect($request->validated())->filter()->all();
+        Log::info("Updating brand ID: " . $id . " with data: " . json_encode($changedData));
+        return $this->brandRepository->update($id, $changedData);
     }
 
     public function destroy($id)

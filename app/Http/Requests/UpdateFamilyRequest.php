@@ -22,8 +22,8 @@ class UpdateFamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:families,name,' . $this->family->id,
-            'slug' => 'required|string|max:255|unique:families,slug,' . $this->family->id,
+            'name' => 'sometimes|string|max:255|unique:families,name,' . $this->family->id,
+            'slug' => 'sometimes|string|max:255|unique:families,slug,' . $this->family->id,
             'description' => 'nullable|string',
         ];
     }
