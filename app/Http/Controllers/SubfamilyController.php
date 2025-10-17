@@ -25,9 +25,6 @@ class SubfamilyController extends Controller
         return $this->subfamilyRepository->create($request->validated());
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show( $id)
     {
         return $this->subfamilyRepository->find($id);

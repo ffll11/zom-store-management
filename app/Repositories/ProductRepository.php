@@ -3,9 +3,10 @@
 namespace App\Repositories;
 
 use App\Filters\ProductFilter;
-use App\Models\Product;;
+use App\Models\Product;
 use App\Http\Resources\ProductResource;
 use App\Interfaces\BaseRepository;
+use Log;
 
 class ProductRepository implements BaseRepository
 {
@@ -16,20 +17,50 @@ class ProductRepository implements BaseRepository
         $this->productFilter = $productFilter;
     }
 
-    public function all($request)
-    {
-        if(!isset($request)) {
+    public function all($request){
+        /*if (!isset($request)) {
 
             if(!Product::all()) {
                 return "No products found";
             }
 
             return ProductResource::collection(Product::all());
+
         }else{
 
-            
+            $queryItems = $this->productFilter->transform($request);
+
+            if ($queryItems) {
+
+              $products = Product::where($queryItems);
+              if ($products->count() == 0) {
+                return "No products match the given criteria.";
+              }
+                return ProductResource::collection($products->paginate(10)->appends($request->query()));
+            }
+        } */
+
+        if (!Product::all()) {
+            return "No products found";
         }
 
+        if($request) {
+
+          $queryItems = $this->productFilter->transform($request);
+
+          if ($queryItems) {
+
+            $products = Product::where($queryItems);
+            if ($products->count() == 0) {
+              return "No products match the given criteria.";
+            }
+              return ProductResource::collection($products->paginate(10)->appends($request->query()));
+          }
+        }
+
+        Log::info('No filters applied, returning all products.');
+
+        return ProductResource::collection(Product::all());
     }
 
     public function find($id)

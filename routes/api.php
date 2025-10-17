@@ -20,3 +20,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::apiResource('brands', \App\Http\Controllers\BrandController::class);
 Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);
+Route::apiResource('families', \App\Http\Controllers\FamilyController::class);
+Route::apiResource('products', \App\Http\Controllers\ProductController::class);
+Route::apiResource('roles', \App\Http\Controllers\RoleController::class);
+Route::apiResource('subcategories', \App\Http\Controllers\SubcategoryController::class);
+Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::class);
