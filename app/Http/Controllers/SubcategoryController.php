@@ -2,65 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SubcategoryResource;
 use App\Models\Subcategory;
 use App\Http\Requests\StoreSubcategoryRequest;
 use App\Http\Requests\UpdateSubcategoryRequest;
+use App\Repositories\SubcategoryRepository;
+use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+   protected $subcategoryRepository;
+
+   public function __construct(SubcategoryRepository $subcategoryRepository)
+   {
+       $this->subcategoryRepository = $subcategoryRepository;
+   }
+    public function index(Request $request)
     {
-        //
+        return SubcategoryResource::collection($this->subcategoryRepository->all($request->query()));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSubcategoryRequest $request)
     {
-        //
+        $subcategory = $this->subcategoryRepository->create($request->validated());
+        return new SubcategoryResource($subcategory);
+    }
+    public function show( $id)
+    {
+        $subcategory = $this->subcategoryRepository->find($id);
+        return new SubcategoryResource($subcategory);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Subcategory $subcategory)
+    public function update(UpdateSubcategoryRequest $request, $id)
     {
-        //
+        $subcategory = $this->subcategoryRepository->update($id, $request->validated());
+        return new SubcategoryResource($subcategory);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Subcategory $subcategory)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSubcategoryRequest $request, Subcategory $subcategory)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Subcategory $subcategory)
-    {
-        //
+        return $this->subcategoryRepository->delete($id);
     }
 }

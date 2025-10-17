@@ -5,62 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\Family;
 use App\Http\Requests\StoreFamilyRequest;
 use App\Http\Requests\UpdateFamilyRequest;
+use App\Repositories\FamilyRepository;
+use Illuminate\Http\Request;
 
 class FamilyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $familyRepository;
+
+    public function __construct(FamilyRepository $familyRepository)
     {
-        //
+        $this->familyRepository = $familyRepository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        return $this->familyRepository->all($request);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreFamilyRequest $request)
     {
-        //
+        return $this->familyRepository->create($request->validated());
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Family $family)
+    public function show($id)
     {
-        //
+        return $this->familyRepository->find($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Family $family)
+    public function update(UpdateFamilyRequest $request, $id)
     {
-        //
+        return $this->familyRepository->update($id, $request->validated());
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateFamilyRequest $request, Family $family)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Family $family)
-    {
-        //
+        return $this->familyRepository->delete($id);
     }
 }

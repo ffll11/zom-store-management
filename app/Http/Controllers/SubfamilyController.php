@@ -5,62 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\Subfamily;
 use App\Http\Requests\StoreSubfamilyRequest;
 use App\Http\Requests\UpdateSubfamilyRequest;
-
+use Illuminate\Http\Request;
+use App\Repositories\SubfamilyRepository;
 class SubfamilyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $subfamilyRepository;
+
+    public function __construct(SubfamilyRepository $subfamilyRepository)
     {
-        //
+        $this->subfamilyRepository = $subfamilyRepository;
+    }
+    public function index(Request $request)
+    {
+        return $this->subfamilyRepository->all($request);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSubfamilyRequest $request)
     {
-        //
+        return $this->subfamilyRepository->create($request->validated());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Subfamily $subfamily)
+    public function show( $id)
     {
-        //
+        return $this->subfamilyRepository->find($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Subfamily $subfamily)
+    public function update(UpdateSubfamilyRequest $request, $id)
     {
-        //
+        return $this->subfamilyRepository->update($id, $request->validated());
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSubfamilyRequest $request, Subfamily $subfamily)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Subfamily $subfamily)
-    {
-        //
+        return $this->subfamilyRepository->delete($id);
     }
 }

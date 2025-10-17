@@ -5,62 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Repositories\ProductRepository;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $productRepository;
+    public function __construct(ProductRepository $productRepository)
     {
-        //
+        $this->productRepository = $productRepository;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        return $this->productRepository->all($request);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreProductRequest $request)
     {
-        //
+        return $this->productRepository->create($request->validated());
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Product $product)
     {
-        //
+        return $this->productRepository->find($product->id);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        return $this->productRepository->update($product->id, $request->validated());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Product $product)
     {
-        //
+        return $this->productRepository->delete($product->id);
     }
 }
