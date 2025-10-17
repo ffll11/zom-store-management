@@ -20,6 +20,7 @@ class BrandFactory extends Factory
             'name' => $this->faker->unique()->company(),
             'slug' => $this->faker->unique()->slug(),
             'description' => $this->faker->optional()->paragraph(),
+            'country' => $this->faker->optional()->country(),
         ];
     }
 }

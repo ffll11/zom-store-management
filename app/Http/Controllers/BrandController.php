@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Repositories\BrandRepository;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
@@ -14,9 +15,9 @@ class BrandController extends Controller
     {
         $this->brandRepository = $brandRepository;
     }
-    public function index()
+    public function index(Request $request)
     {
-        return $this->brandRepository->all();
+        return $this->brandRepository->all($request);
     }
 
     public function store(StoreBrandRequest $request)

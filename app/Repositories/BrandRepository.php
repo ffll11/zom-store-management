@@ -6,14 +6,32 @@ use App\Http\Resources\BrandResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Brand;
 use Illuminate\Support\Facades\Log;
-
+use App\Filters\BrandFilter;
 class BrandRepository implements BaseRepository
 {
+    protected $brandFilter;
 
-    public function all()
+    public function __construct(BrandFilter $brandFilter)
+    {
+        $this->brandFilter = $brandFilter;
+    }
+    public function all($request)
     {
         if (!Brand::all()) {
             return "No brands found";
+        }
+        if($request) {
+
+          $queryItems = $this->brandFilter->transform($request);
+
+          if ($queryItems) {
+
+            $brands = Brand::where($queryItems);
+            if ($brands->count() == 0) {
+              return "No brands match the given criteria.";
+            }
+              return BrandResource::collection($brands->paginate(10)->appends($request->query()));
+          }
         }
 
         return BrandResource::collection(Brand::paginate(10));

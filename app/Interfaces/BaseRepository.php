@@ -3,7 +3,7 @@
 namespace App\Interfaces;
 interface BaseRepository
 {
-    public function all();
+    public function all($request);
 
     public function find($id);
 
