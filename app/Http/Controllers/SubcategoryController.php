@@ -19,24 +19,21 @@ class SubcategoryController extends Controller
    }
     public function index(Request $request)
     {
-        return SubcategoryResource::collection($this->subcategoryRepository->all($request->query()));
+        return $this->subcategoryRepository->all($request);
     }
 
     public function store(StoreSubcategoryRequest $request)
     {
-        $subcategory = $this->subcategoryRepository->create($request->validated());
-        return new SubcategoryResource($subcategory);
+        return $this->subcategoryRepository->create($request->validated());
     }
     public function show( $id)
     {
-        $subcategory = $this->subcategoryRepository->find($id);
-        return new SubcategoryResource($subcategory);
+      return  $this->subcategoryRepository->find($id);
     }
 
     public function update(UpdateSubcategoryRequest $request, $id)
     {
-        $subcategory = $this->subcategoryRepository->update($id, $request->validated());
-        return new SubcategoryResource($subcategory);
+        return $this->subcategoryRepository->update($id, $request->validated());
     }
 
     public function destroy($id)

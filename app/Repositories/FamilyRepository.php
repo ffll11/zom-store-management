@@ -12,14 +12,11 @@ class FamilyRepository implements BaseRepository{
 
     public function all($request)
     {
-        if(!isset($request)) {
-
-            if(!Family::all()) {
-                return "No families found";
-            }
-
-            return FamilyResource::collection(Family::all());
+        if(!Family::all()) {
+            return "No families found";
         }
+
+        return FamilyResource::collection(Family::all());
     }
     public function find($id)
     {
@@ -38,7 +35,6 @@ class FamilyRepository implements BaseRepository{
         if (!$attributes) {
             return "Attributes are required";
         }
-
         return new FamilyResource(resource: Family::create($attributes));
     }
 
@@ -69,6 +65,7 @@ class FamilyRepository implements BaseRepository{
         $family = Family::find($id);
         if ($family) {
             $family->delete();
+
             return "Family deleted successfully";
         }
         return "Family not found";

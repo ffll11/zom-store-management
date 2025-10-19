@@ -18,27 +18,6 @@ class ProductRepository implements BaseRepository
     }
 
     public function all($request){
-        /*if (!isset($request)) {
-
-            if(!Product::all()) {
-                return "No products found";
-            }
-
-            return ProductResource::collection(Product::all());
-
-        }else{
-
-            $queryItems = $this->productFilter->transform($request);
-
-            if ($queryItems) {
-
-              $products = Product::where($queryItems);
-              if ($products->count() == 0) {
-                return "No products match the given criteria.";
-              }
-                return ProductResource::collection($products->paginate(10)->appends($request->query()));
-            }
-        } */
 
         if (!Product::all()) {
             return "No products found";

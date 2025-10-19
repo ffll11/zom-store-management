@@ -4,15 +4,20 @@ namespace App\Filters;
 
 class ProductFilter extends ApiFilter
 {
-    // Define filter properties and methods here
     protected $safeParams = [
         'name' => ['eq', 'like'],
         'price' => ['eq', 'lt', 'gt', 'lte', 'gte'],
         'subfamilyId' => ['eq'],
+        'familyId' => ['eq'],
+        'subcategoryId' => ['eq'],
+        'categoryId' => ['eq'],
     ];
 
     protected $columnMap = [
         'subfamily' => 'subfamilyId',
+        'family' => 'familyId',
+        'category' => 'categoryId',
+        'subcategory' => 'subcategoryId',
     ];
 
     protected $operatorMap = [
@@ -23,6 +28,4 @@ class ProductFilter extends ApiFilter
         'gte' => '>=',
         'like' => 'like',
     ];
-
-
 }

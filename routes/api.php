@@ -25,3 +25,4 @@ Route::apiResource('products', \App\Http\Controllers\ProductController::class);
 Route::apiResource('roles', \App\Http\Controllers\RoleController::class);
 Route::apiResource('subcategories', \App\Http\Controllers\SubcategoryController::class);
 Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::class);
+Route::apiResource('users', \App\Http\Controllers\UserController::class);

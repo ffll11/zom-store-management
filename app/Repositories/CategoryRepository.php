@@ -5,20 +5,17 @@ namespace App\Repositories;
 use App\Http\Resources\CategoryResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Category;
-    
+
 class CategoryRepository implements BaseRepository
 {
 
     public function all($request)
     {
-        if(!isset($request)) {
-
-            if(!Category::all()) {
-                return "No categories found";
-            }
-
-            return CategoryResource::collection(Category::all());
+        if(!Category::all()) {
+            return "No categories found";
         }
+
+        return CategoryResource::collection(Category::all());
     }
 
     public function find($id)
@@ -68,9 +65,11 @@ class CategoryRepository implements BaseRepository
         }
 
         $category = Category::find($id);
+
         if ($category) {
             $category->delete();
-            return response()->json("Successfully deleted", 204);
+
+            return "Category deleted successfully";
         }
         return "Category not found";
     }

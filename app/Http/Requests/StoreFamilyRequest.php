@@ -22,10 +22,10 @@ class StoreFamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'name' => 'required|string|max:255|unique:families,name',
             'slug' => 'required|string|max:255|unique:families,slug',
             'description' => 'nullable|string',
+            'subcategory_id' => 'required|exists:subcategories,id',
         ];
     }
 }

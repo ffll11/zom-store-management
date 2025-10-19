@@ -9,15 +9,10 @@ class SubcategoryRepository implements BaseRepository
 {
     public function all($request)
     {
-
-    if(!isset($request)) {
-
-            if(!Subcategory::all()) {
-                return "No subcategories found";
-            }
-
-            return SubcategoryResource::collection(Subcategory::all());
+        if(!Subcategory::all()) {
+            return "No subcategories found";
         }
+            return SubcategoryResource::collection(Subcategory::all());
     }
 
     public function find($id)
@@ -39,7 +34,7 @@ class SubcategoryRepository implements BaseRepository
             return "Attributes are required";
         }
 
-        return new SubcategoryResource(resource: Subcategory::create($attributes));
+        return new SubcategoryResource(Subcategory::create($attributes));
     }
     public function update($id, array $attributes)
     {
@@ -53,6 +48,7 @@ class SubcategoryRepository implements BaseRepository
 
         $subcategory = Subcategory::find($id);
         if ($subcategory) {
+
             $subcategory->update($attributes);
             return new SubcategoryResource($subcategory);
         }
@@ -68,7 +64,7 @@ class SubcategoryRepository implements BaseRepository
         $subcategory = Subcategory::find($id);
         if ($subcategory) {
             $subcategory->delete();
-            return response()->json(null, 204);
+            return "Subcategory deleted successfully";
         }
         return "Subcategory not found";
     }

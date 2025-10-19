@@ -22,9 +22,10 @@ class UpdateFamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255|unique:families,name,' . $this->family->id,
-            'slug' => 'sometimes|string|max:255|unique:families,slug,' . $this->family->id,
+            'name' => 'sometimes|string|max:255|unique:families,name,' ,
+            'slug' => 'sometimes|string|max:255|unique:families,slug,' ,
             'description' => 'nullable|string',
+            'subcategory_id' => 'sometimes|exists:subcategories,id',
         ];
     }
 }

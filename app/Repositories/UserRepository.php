@@ -9,14 +9,12 @@ class UserRepository implements BaseRepository
 {
     public function all($request)
     {
-        if(!isset($request)) {
+        if(!User::all()) {
 
-            if(!User::all()) {
-                return "No users found";
-            }
-
-            return UserResource::collection(User::all());
+            return "No users found";
         }
+
+        return UserResource::collection(User::all());
     }
 
     public function find($id)

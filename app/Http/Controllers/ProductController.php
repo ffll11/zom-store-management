@@ -25,17 +25,17 @@ class ProductController extends Controller
     {
         return $this->productRepository->create($request->validated());
     }
-    public function show(Product $product)
+    public function show( $id)
     {
-        return $this->productRepository->find($product->id);
+        return $this->productRepository->find($id);
     }
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $id)
     {
-        return $this->productRepository->update($product->id, $request->validated());
+        return $this->productRepository->update($id, $request->validated());
     }
 
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        return $this->productRepository->delete($product->id);
+        return $this->productRepository->delete($id);
     }
 }

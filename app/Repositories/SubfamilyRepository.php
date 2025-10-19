@@ -9,14 +9,11 @@ class SubfamilyRepository implements BaseRepository
 {
     public function all($request)
     {
-        if(!isset($request)) {
-
-            if(!Subfamily::all()) {
-                return "No subfamilies found";
-            }
-
-            return SubfamilyResource::collection(Subfamily::all());
+        if(!Subfamily::all()) {
+            return "No subfamilies found";
         }
+
+        return SubfamilyResource::collection(Subfamily::all());
     }
 
     public function find($id)
@@ -66,7 +63,8 @@ class SubfamilyRepository implements BaseRepository
         $subfamily = Subfamily::find($id);
         if ($subfamily) {
             $subfamily->delete();
-            return response()->json(null, 204);
+
+            return "Subfamily deleted successfully";
         }
         return "Subfamily not found";
     }

@@ -22,10 +22,10 @@ class UpdateSubfamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255|unique:subfamilies,name,' . $this->subfamily->id,
-            'slug' => 'sometimes|string|max:255|unique:subfamilies,slug,' . $this->subfamily->id,
+            'name' => 'sometimes|string|max:255|unique:subfamilies,name,' ,
+            'slug' => 'sometimes|string|max:255|unique:subfamilies,slug,' ,
             'description' => 'nullable|string',
-            'family_id' => 'required|exists:families,id',
+            'family_id' => 'sometimes|exists:families,id',
         ];
     }
 }

@@ -22,7 +22,7 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255|unique:roles,name,' . $this->role->id,
+            'name' => 'sometimes|string|max:255|unique:roles,name,' ,
             'description' => 'nullable|string',];
     }
 }

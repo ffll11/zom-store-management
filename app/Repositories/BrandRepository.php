@@ -70,15 +70,10 @@ class BrandRepository implements BaseRepository
         }
 
         $brand = Brand::find($id);
-
-
+        
         if ($brand) {
-            Log::info("Updating brand id {$id} with attributes: " . json_encode($attributes));
 
             $brand->update($attributes);
-
-            Log::info("Brand updated successfully: " . json_encode($brand));
-
             return new BrandResource($brand);
         }
         return "Brand not found";

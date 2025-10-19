@@ -10,14 +10,12 @@ class RoleRepository implements BaseRepository
 {
     public function all($request)
     {
-        if(!isset($request)) {
 
-            if(!Role::all()) {
-                return "No roles found";
-            }
-
-            return RoleResource::collection(Role::all());
+        if(!Role::all()) {
+            return "No roles found";
         }
+
+        return RoleResource::collection(Role::all());
     }
 
     public function find($id)
