@@ -14,14 +14,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
- /*        \App\Models\User::factory()->create([
+        \App\Models\User::factory()->create([
             'name' => 'Admin User',
-            'role_id' => '1',
+            'role_id' => 1,
             'email' => 'admin@example.com',
-            'password' => 'Admin@123',
-
+            'password' => bcrypt('Admin@123'),
         ]);
- */
+
         $this->call([
             FamilySeeder::class,
             SubfamilySeeder::class,

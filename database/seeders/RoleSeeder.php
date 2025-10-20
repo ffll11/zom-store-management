@@ -20,5 +20,13 @@ class RoleSeeder extends Seeder
             'name' => 'Employee',
             'description' => 'Description for Employee Role',
         ]);
+        \App\Models\Role::create([
+            'name' => 'Customer',
+            'description' => 'Regular customer with basic privileges',
+        ]);
+        \App\Models\Role::create([
+            'name' => 'Manager',
+            'description' => 'Department manager with elevated permissions',
+        ]);
     }
 }

@@ -52,4 +52,5 @@ class RoleRepository implements BaseRepository
         $role->delete();
         return response()->json(null, 204);
     }
+    
 }

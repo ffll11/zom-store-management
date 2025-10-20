@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->string('sku')->unique();
             $table->string('slug')->unique();
+            $table->boolean('is_active')->default(true);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->foreignId('subfamily_id')->constrained()->onDelete('cascade');

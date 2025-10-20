@@ -68,4 +68,19 @@ class UserRepository implements BaseRepository
         }
         return "User not found";
     }
+
+    public function addRole($userId, $roleId)
+    {
+        if (empty($userId) || empty($roleId)) {
+            return "User ID and Role ID are required";
+        }
+
+        $user = User::find($userId);
+        if ($user) {
+            $user->role_id = $roleId;
+            $user->save();
+            return new UserResource($user);
+        }
+        return "User not found";
+    }
 }

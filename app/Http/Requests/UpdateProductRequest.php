@@ -26,6 +26,7 @@ class UpdateProductRequest extends FormRequest
             'slug' => 'sometimes|string|max:255|unique:products,slug,',
             'description' => 'nullable|string',
             'price' => 'sometimes|numeric|min:0',
+            'is_active' => 'sometimes|boolean',
             'image_url' => 'sometimes|image|max:2048',
             'sku' => 'sometimes|string|max:100|unique:products,sku,',
             'quantity' => 'sometimes|integer|min:0',
