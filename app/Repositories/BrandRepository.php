@@ -70,7 +70,7 @@ class BrandRepository implements BaseRepository
         }
 
         $brand = Brand::find($id);
-        
+
         if ($brand) {
 
             $brand->update($attributes);
@@ -94,7 +94,8 @@ class BrandRepository implements BaseRepository
 
             $brand->delete();
 
-            return "Brand deleted successfully";
+                return response()->noContent();
+
         }
         return "Brand not found";
     }

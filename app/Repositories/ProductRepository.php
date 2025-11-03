@@ -84,14 +84,20 @@ class ProductRepository implements BaseRepository
 
     public function delete($id)
     {
-        if (empty($id)) {
+        if (! $id) {
+            return null;
+        }
+
+        if(empty($id)){
             return "Id is required";
         }
 
         $product = Product::find($id);
         if ($product) {
+
             $product->delete();
-            return "Product deleted successfully";
+
+            return response()->noContent();
         }
         return "Product not found";
     }

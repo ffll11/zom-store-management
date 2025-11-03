@@ -56,15 +56,18 @@ class SubfamilyRepository implements BaseRepository
     }
     public function delete($id)
     {
-        if (empty($id)) {
-            return "Id is required";
+        if (! $id) {
+            return null;
         }
 
+        if(empty($id)){
+            return "Id is required";
+        }
         $subfamily = Subfamily::find($id);
         if ($subfamily) {
             $subfamily->delete();
 
-            return "Subfamily deleted successfully";
+            return response()->noContent();
         }
         return "Subfamily not found";
     }

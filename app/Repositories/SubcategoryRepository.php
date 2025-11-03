@@ -57,14 +57,20 @@ class SubcategoryRepository implements BaseRepository
 
     public function delete($id)
     {
-        if (empty($id)) {
+        if (! $id) {
+            return null;
+        }
+
+        if(empty($id)){
             return "Id is required";
         }
 
         $subcategory = Subcategory::find($id);
         if ($subcategory) {
+
             $subcategory->delete();
-            return "Subcategory deleted successfully";
+
+            return response()->noContent();
         }
         return "Subcategory not found";
     }

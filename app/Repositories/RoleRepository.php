@@ -45,12 +45,22 @@ class RoleRepository implements BaseRepository
 
     public function delete($id)
     {
-        $role = Role::find($id);
-        if (!$role) {
-            return "Role not found";
+        if (! $id) {
+            return null;
         }
-        $role->delete();
-        return response()->json(null, 204);
+
+        if(empty($id)){
+            return "Id is required";
+        }
+
+        $role = Role::find($id);
+        if ($role) {
+
+            $role->delete();
+
+            return response()->noContent();
+        }
+        return "Role not found";
     }
-    
+
 }

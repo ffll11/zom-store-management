@@ -58,7 +58,11 @@ class FamilyRepository implements BaseRepository{
 
     public function delete($id)
     {
-        if (empty($id)) {
+        if (! $id) {
+            return null;
+        }
+
+        if(empty($id)){
             return "Id is required";
         }
 
@@ -66,7 +70,7 @@ class FamilyRepository implements BaseRepository{
         if ($family) {
             $family->delete();
 
-            return "Family deleted successfully";
+            return response()->noContent();
         }
         return "Family not found";
     }
