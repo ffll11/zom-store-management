@@ -16,16 +16,16 @@ class CategoryTest extends TestCase
 
         $response = $this->getJson('/api/categories');
 
-         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+        $response->assertStatus(200)
+        ->assertJsonCount(3);
     }
 
     /** @test*/
     public function it_can_create_a_category(){
 
         $data = [
-            'name' => 'Category test 3',
-            'slug' => 'category-test3',
+            'name' => 'Category test 4',
+            'slug' => 'category-test4',
             'description' => "Category test",
         ];
 

@@ -25,8 +25,8 @@ class BrandTest extends TestCase
 
     public function it_can_create_a_brand(){
         $data = [
-            'name' => 'Apa',
-            'slug' => 'apa',
+            'name' => 'BrandTest1',
+            'slug' => 'brandtest1',
             'description' => "Italian brand",
             'country' => 'Italia'
         ];
@@ -65,7 +65,7 @@ class BrandTest extends TestCase
     {
         $brand = Brand::factory()->create();
 
-        $data = ['name' => 'Oma'];
+        $data = ['name' => 'UpdatedBrand'];
 
         $response = $this->putJson("/api/brands/{$brand->id}", $data);
 

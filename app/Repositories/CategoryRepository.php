@@ -11,11 +11,11 @@ class CategoryRepository implements BaseRepository
 
     public function all($request)
     {
-
-        if(!$request){
-        return CategoryResource::collection(Category::all());
-
+        if(!Category::all()) {
+            return "No categories found";
         }
+
+        return CategoryResource::collection(Category::all());
     }
 
     public function find($id)
@@ -25,7 +25,7 @@ class CategoryRepository implements BaseRepository
         }
 
         $category = Category::find($id);
-        
+
         if ($category) {
             return new CategoryResource($category);
         }
@@ -52,7 +52,9 @@ class CategoryRepository implements BaseRepository
         }
 
         $category = Category::find($id);
+
         if ($category) {
+
             $category->update($attributes);
             return new CategoryResource($category);
         }
@@ -71,11 +73,11 @@ class CategoryRepository implements BaseRepository
 
         $category = Category::find($id);
 
-        if ($category) {
+        if ($category->subcategories()->count() > 0) {
+            return "Cannot delete category with existing subcategories";
+        }else{
             $category->delete();
-
             return response()->noContent();
         }
-        return "Category not found";
     }
 }
