@@ -19,7 +19,6 @@ class SubfamilyResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'family' => $this->family->name,
         ];
     }
 }

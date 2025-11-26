@@ -10,7 +10,7 @@ class Country extends Model
     use HasFactory;
       protected $fillable = ['name' , 'slug','description'];
 
-      public function brand(){
-        return $this->belongsTo(Brand::class);
+      public function brands(){
+        return $this->hasMany(Brand::class);
       }
 }

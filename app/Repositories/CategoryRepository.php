@@ -18,6 +18,14 @@ class CategoryRepository implements BaseRepository
         return CategoryResource::collection(Category::all());
     }
 
+    public function navbarData(){
+            $categories = Category::with([
+        'subcategories.families.subfamilies'
+    ])->get();
+
+    return CategoryResource::collection($categories);
+    }
+
     public function find($id)
     {
         if (empty($id)) {

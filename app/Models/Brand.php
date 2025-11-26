@@ -15,7 +15,7 @@ class Brand extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function countries(){
-    return $this->hasMany(Country::class);
+    public function country(){
+    return $this->belongsTo(Country::class);
     }
 }

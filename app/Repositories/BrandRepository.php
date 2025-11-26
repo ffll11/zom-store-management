@@ -15,7 +15,7 @@ class BrandRepository implements BaseRepository
     {
         $this->brandFilter = $brandFilter;
     }
-    public function all($request)
+    public function filteredBrand($request)
     {
         if (!Brand::all()) {
             return "No brands found";
@@ -36,6 +36,16 @@ class BrandRepository implements BaseRepository
 
         return BrandResource::collection(Brand::paginate(10));
     }
+
+    public function all($request){
+
+        if(!Brand::all()) {
+            return "No brands found";
+        }
+
+        return BrandResource::collection(Brand::all());
+    }
+
 
     public function find($id)
     {
