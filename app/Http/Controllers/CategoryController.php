@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -18,9 +19,7 @@ class CategoryController extends Controller
     }
 
     public function navbar(){
-
         return $this->categoryRepository->navbarData();
-
     }
 
     public function index(Request $request)

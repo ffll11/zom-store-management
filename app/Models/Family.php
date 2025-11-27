@@ -16,4 +16,8 @@ class Family extends Model
     public function subcategory(){
         return $this->belongsTo(Subcategory::class);
     }
+
+    public function subfamilies(){
+        return $this->hasMany(Subfamily::class);
+    }
 }

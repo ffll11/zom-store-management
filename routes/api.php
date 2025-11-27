@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum', 'role:Employee'])->group(function () {
     Route::apiResource('brands', \App\Http\Controllers\BrandController::class)->only(['index', 'show']);
     Route::apiResource('families', \App\Http\Controllers\FamilyController::class)->only(['index', 'show']);
     Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::class)->only(['index', 'show']);
-    Route::get('navbar-data', [\App\Http\Controllers\CategoryController::class, 'navbarData']);
+    Route::get('navbar', [\App\Http\Controllers\CategoryController::class, 'navbar']);
 
 
 /*     Route::apiResource('brands', \App\Http\Controllers\BrandController::class);

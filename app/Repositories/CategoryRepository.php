@@ -19,11 +19,23 @@ class CategoryRepository implements BaseRepository
     }
 
     public function navbarData(){
+        try {
             $categories = Category::with([
-        'subcategories.families.subfamilies'
-    ])->get();
+                'subcategories.families.subfamilies'
+            ])->get();
 
-    return CategoryResource::collection($categories);
+            \Illuminate\Support\Facades\Log::info('CategoryRepository@navbarData: fetched categories', [
+                'count' => $categories->count()
+            ]);
+
+            return CategoryResource::collection($categories);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('CategoryRepository@navbarData error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return "Failed to fetch navbar data";
+        }
     }
 
     public function find($id)

@@ -22,11 +22,12 @@ class ProductResource extends JsonResource
             'image' => $this->image_url,
             'description' => $this->description,
             'price' => $this->price,
-            'subfamily' => $this->subfamily->name,
-            'brand' => $this->brand->name,
-            'family' => $this->subfamily->family->name,
-            'subcategory' => $this->subfamily->family->subcategory->name,
-            'category' => $this->subfamily->family->subcategory->category->name,
+            'category_slug' => $this->subfamily->family->subcategory->category->slug,
+            'subcategory_slug' => $this->subfamily->family->subcategory->slug,
+            'family_slug' => $this->subfamily->family->slug,
+            'subfamily_slug' => $this->subfamily->slug,
+            'brand_slug' => $this->brand->slug,
+
         ];
     }
 }
