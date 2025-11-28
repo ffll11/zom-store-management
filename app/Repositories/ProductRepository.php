@@ -3,9 +3,11 @@
 namespace App\Repositories;
 
 use App\Filters\ProductFilter;
+use App\Http\Resources\PromotionProductResource;
 use App\Models\Product;
 use App\Http\Resources\ProductResource;
 use App\Interfaces\BaseRepository;
+use App\Models\Promotion;
 use Log;
 
 class ProductRepository implements BaseRepository
@@ -101,5 +103,64 @@ class ProductRepository implements BaseRepository
         }
         return "Product not found";
     }
+
+
+public function promotedProducts()
+{
+    // Just get products with their promotion relationships
+    $products = Product::with(['promotionProducts.promotion'])
+        ->whereHas('promotionProducts.promotion', function($query) {
+            $query->active();
+        })
+        ->get();
+
+    return ProductResource::collection($products);
+}
+
+public function activePromotions($request)
+{
+    $products = Product::with(['promotionProducts.promotion'])
+        ->whereHas('promotionProducts.promotion', function ($query) use ($request) {
+            $query->active();
+
+            // Determine the promotion name from the passed value (accept either a string or a Request-like object)
+            $name = is_string($request) ? $request : (is_object($request) && isset($request->name) ? $request->name : null);
+
+            if ($name) {
+                $name = trim($name);
+                if (strpos($name, ' ') !== false && count(preg_split('/\s+/', $name)) > 1) {
+                    $words = preg_split('/\s+/', $name);
+                    $query->where(function($q) use ($words) {
+                        foreach ($words as $word) {
+                            $q->where('name', 'like', '%' . $word . '%');
+                        }
+                    });
+                } else {
+                    $query->where('name', $name);
+                }
+            }
+        })
+        ->get();
+
+    // Attach calculated discounted price to each product so the resource can return it
+    foreach ($products as $product) {
+        $product->setAttribute('discounted_price', $this->calculateDiscountedPrice($product));
+    }
+
+    return ProductResource::collection($products);
+}
+
+public function calculateDiscountedPrice(Product $product)
+{
+    $promotionProduct = $product->promotionProducts()->with('promotion')->first();
+
+    if ($promotionProduct && $promotionProduct->promotion) {
+        $discount = $promotionProduct->promotion->discount_percentage;
+        $discountedPrice = $product->sale_price * (1 - $discount / 100);
+        return round($discountedPrice, 2);
+    }
+
+    return $product->sale_price;
+}
 
 }

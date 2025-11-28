@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
+            $table->decimal('sale_price', 10, 2)->nullable();
             $table->foreignId('subfamily_id')->constrained();
             $table->foreignId('brand_id')->constrained();
             $table->timestamps();

@@ -46,7 +46,8 @@ Route::middleware(['auth:sanctum', 'role:Employee'])->group(function () {
     Route::apiResource('families', \App\Http\Controllers\FamilyController::class)->only(['index', 'show']);
     Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::class)->only(['index', 'show']);
     Route::get('navbar', [\App\Http\Controllers\CategoryController::class, 'navbar']);
-
+    Route::get('banners', [\App\Http\Controllers\BannerController::class, 'activeBanners']);
+    Route::get('products', [\App\Http\Controllers\ProductController::class, 'activePromotions']);
 
 /*     Route::apiResource('brands', \App\Http\Controllers\BrandController::class);
     Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);

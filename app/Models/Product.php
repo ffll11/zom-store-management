@@ -20,4 +20,8 @@ class Product extends Model
         return $this->belongsTo(Subfamily::class);
     }
 
+    public function promotionProducts()
+    {
+        return $this->hasMany(PromotionProduct::class);
+    }
 }

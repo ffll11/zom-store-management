@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
+            $table->string('name');
             $table->text('description')->nullable();
-            $table->string('image_url')->nullable();
-            $table->foreignId ('country_id')->constrained();
+            $table->enum('discount_type', ['percentage', 'fixed_amount'])->nullable();
+            $table->decimal('discount_value', 10, 2)->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('promotions');
     }
 };

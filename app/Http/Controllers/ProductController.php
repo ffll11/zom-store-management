@@ -38,4 +38,9 @@ class ProductController extends Controller
     {
         return $this->productRepository->delete($id);
     }
+
+    public function activePromotions($request)
+    {
+        return $this->productRepository->activePromotions($request);
+    }
 }

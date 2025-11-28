@@ -5,8 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\FamilyResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Family;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
+
 
 class FamilyRepository implements BaseRepository{
 
