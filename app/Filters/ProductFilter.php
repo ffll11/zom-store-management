@@ -11,6 +11,8 @@ class ProductFilter extends ApiFilter
         'familyId' => ['eq'],
         'subcategoryId' => ['eq'],
         'categoryId' => ['eq'],
+        'brandId' => ['eq'],
+        'sale_price' => ['eq', 'lt', 'gt', 'lte', 'gte'],
     ];
 
     protected $columnMap = [
@@ -18,6 +20,9 @@ class ProductFilter extends ApiFilter
         'family' => 'familyId',
         'category' => 'categoryId',
         'subcategory' => 'subcategoryId',
+        'brand' => 'brandId',
+        'sale_price' => 'sale_price',
+        
     ];
 
     protected $operatorMap = [

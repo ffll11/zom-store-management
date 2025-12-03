@@ -21,13 +21,13 @@ class ProductResource extends JsonResource
             'sku' => $this->sku,
             'image' => $this->image_url,
             'description' => $this->description,
+            'is_active' => $this->is_active,
+            'is_on_sale' => $this->is_on_sale,
+            'price' => $this->price,
             'sale_price' => $this->sale_price,
-            'category_slug' => $this->subfamily->family->subcategory->category->slug,
-            'subcategory_slug' => $this->subfamily->family->subcategory->slug,
-            'family_slug' => $this->subfamily->family->slug,
-            'subfamily_slug' => $this->subfamily->slug,
-            'brand_slug' => $this->brand->slug,
-            'promotion' => $this->promotionProducts->isNotEmpty() ? new PromotionResource($this->promotionProducts->first()->promotion) : null,
+            'brand' => $this->brand ? $this->brand->name : null,
+            'brandSlug' => $this->brand ? $this->brand->slug : null,
+
 
         ];
     }

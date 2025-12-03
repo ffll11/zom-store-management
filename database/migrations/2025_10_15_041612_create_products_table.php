@@ -21,6 +21,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->decimal('sale_price', 10, 2)->nullable();
+            $table->boolean('is_on_sale')->default(false);
+            $table->decimal('discount_value', 10, 2)->nullable();
+            $table->enum('discount_type', ['percentage', 'fixed'])->nullable();
             $table->foreignId('subfamily_id')->constrained();
             $table->foreignId('brand_id')->constrained();
             $table->timestamps();

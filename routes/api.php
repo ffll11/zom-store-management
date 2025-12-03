@@ -39,15 +39,23 @@ Route::middleware(['auth:sanctum', 'role:Employee'])->group(function () {
  */
 
 //All non protected routes can be defined here
-    Route::apiResource('products', \App\Http\Controllers\ProductController::class)->only(['index', 'show']);
+   // Route::apiResource('products', \App\Http\Controllers\ProductController::class)->only(['index', 'show']);
     Route::apiResource('categories', \App\Http\Controllers\CategoryController::class)->only(['index', 'show']);
     Route::apiResource('subcategories', \App\Http\Controllers\SubcategoryController::class)->only(['index', 'show']);
     Route::apiResource('brands', \App\Http\Controllers\BrandController::class)->only(['index', 'show']);
     Route::apiResource('families', \App\Http\Controllers\FamilyController::class)->only(['index', 'show']);
     Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::class)->only(['index', 'show']);
     Route::get('navbar', [\App\Http\Controllers\CategoryController::class, 'navbar']);
-    Route::get('banners', [\App\Http\Controllers\BannerController::class, 'activeBanners']);
-    Route::get('products', [\App\Http\Controllers\ProductController::class, 'activePromotions']);
+    Route::get('banners', [\App\Http\Controllers\BannerController::class, 'index']);
+
+    // accept only an "id" (no implicit model binding)
+    Route::get('products/{slug}', [\App\Http\Controllers\Catalog\ProductController::class, 'show']);
+
+
+    Route::get('on-sale', [\App\Http\Controllers\Catalog\ProductController::class, 'getOnSaleProducts']);
+    Route::get('latest', [\App\Http\Controllers\Catalog\ProductController::class, 'getLatestProducts']);
+    Route::get('products/nav', [\App\Http\Controllers\Catalog\ProductController::class, 'getNavProducts']);
+    Route::get('/{slug}', [\App\Http\Controllers\Catalog\CatalogController::class, 'catalog']);
 
 /*     Route::apiResource('brands', \App\Http\Controllers\BrandController::class);
     Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);

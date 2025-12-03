@@ -31,7 +31,7 @@ class ApiFilter{
 
     //Se itera sobre el array asociativo safeParams
     //Mostramos el value operators
-    //Soi el quewy del request tiene el valor del operador
+    //Si el query del request tiene el valor del operador
     //Si query no esta seteado, se salta a la siguiente iteracion
     //Si existe paramos el parametro al array columnMap
 

@@ -13,16 +13,13 @@ class BannerController extends Controller
     {
         $this->bannerRepository = $bannerRepository;
     }
-    public function index(Request $request)
+    public function index()
     {
        //+ return $this->bannerRepository->all($request);
         return $this->bannerRepository->activeBanners();
 
     }
 
-    public function activeBanners()
-    {
-        return $this->bannerRepository->activeBanners();
-    }
+
 
 }

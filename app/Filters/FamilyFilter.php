@@ -2,22 +2,18 @@
 
 namespace App\Filters;
 
-class BrandFilter extends ApiFilter {
-
-    protected $safeParams = [
+class FamilyFilter extends ApiFilter {
+    
+    protected $safeParanms = [
         'name' => ['eq', 'like'],
-        'country' => ['eq', 'like'],
     ];
 
     protected $columnMap = [
         'name' => 'name',
-        'country' => 'country',
     ];
 
     protected $operatorMap = [
         'eq' => '=',
         'like' => 'like',
     ];
-
-
 }
