@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    //
     protected $productRepository;
 
     public function __construct(ProductRepository $productRepository)
@@ -18,20 +17,13 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        // Call all the other where i filter data
-        // Call navproducts method
-        // call search and filters
-
-        if ($request->has('ids')) {
-            return $this->getNavProducts($request);
-        }
-        if ($request->has('search')) {
-            return $this->search($request);
-        }
-        if ($request->has('filters')) {
-            return $this->filters($request);
+        // If slug is present, return catalog
+        if ($request->has('slug')) {
+            return $this->productRepository->catalog($request->query('slug'));
         }
 
+        // DEFAULT: Apply filters
+        return $this->productRepository->filters($request);
     }
 
     public function getOnSaleProducts()
@@ -44,30 +36,8 @@ class ProductController extends Controller
         return $this->productRepository->getLatestProducts();
     }
 
-    public function getNavProducts(Request $request)
+    public function show($product)
     {
-        $ids = $request->input('ids', []);
-
-        return $this->productRepository->getNavProducts($ids);
+        return $this->productRepository->find($product);
     }
-
-    public function search(Request $request)
-    {
-        $term = $request->query();
-
-        return $this->productRepository->search($term);
-    }
-
-    public function filters(Request $request)
-    {
-        $filters = $request->query();
-
-        return $this->productRepository->filters($filters);
-    }
-
-    public function show($slug)
-    {
-        return $this->productRepository->find($slug);
-    }
-
 }

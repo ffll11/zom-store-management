@@ -15,8 +15,8 @@ class CatalogResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'title' => $this->title,
-            'products' => ProductResource::collection($this->whenLoaded('products')),
+            'title' => $this->title ?? null,
+            'products' => ProductResource::collection($this->products),
 
         ];
     }

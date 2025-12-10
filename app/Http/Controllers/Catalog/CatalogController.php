@@ -3,100 +3,77 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductResource;
+use App\Http\Resources\CatalogResource;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Subcategory;
 use App\Models\Subfamily;
+use App\Repositories\BannerRepository;
+use App\Repositories\Catalog\ProductRepository;
+use App\Repositories\CategoryRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use SebastianBergmann\Environment\Console;
 
 class CatalogController extends Controller
 {
-    public function catalog($slug)
+    protected $productRepository;
+
+    protected $bannerRepository;
+
+    protected $categoryRepository;
+
+    public function __construct(ProductRepository $productRepository, BannerRepository $bannerRepository, CategoryRepository $categoryRepository)
     {
-        Log::info("CatalogController: catalog called with slug: $slug");
-        // find brand or fail
-        $brand = Brand::where('slug', $slug)->firstOrFail();
+        $this->productRepository = $productRepository;
+        $this->bannerRepository = $bannerRepository;
+        $this->categoryRepository = $categoryRepository;
+    }
 
-        if ($brand) {
-            $products = Product::where('brand_id', $brand->id)->get();
+    public function banners()
+    {
+        return $this->bannerRepository->activeBanners();
+    }
 
-             $response  = response()->json([
-                'type' => 'brand',
-                'slug' => $slug,
-                'title' => $brand->name,
-                'products' => ProductResource::collection($products),
-            ]);
+    public function navbar()
+    {
+        return $this->categoryRepository->navbarData();
+    }
 
-            Log::info("CatalogController: catalog response: " . $response->getContent());   
+    public function getFilters()
+    {
 
-            return $response;
+        // Brands
+        $brands = Brand::all(['id', 'name', 'slug']);
 
-            //Add console log for debugging purposes response
+        // Subfamilies
+        $subfamilies = Subfamily::all(['id', 'name', 'slug']);
 
-        }
+        // others
 
-        // return products by category
+        $sort = [
+            ['value' => 'price_asc', 'label' => 'Price: Low to High'],
+            ['value' => 'price_desc', 'label' => 'Price: High to Low'],
+            ['value' => 'name_asc', 'label' => 'Name: A to Z'],
+            ['value' => 'name_desc', 'label' => 'Name: Z to A'],
+        ];
 
-        $category = Category::where('slug', $slug)->firstOrFail();
+        return response()->json([
+            'data' => [
+                'brands' => $brands,
+                'subfamilies' => $subfamilies,
+                'sort' => $sort,
+            ],
+        ]);
 
-        if ($category) {
-            $products = Product::where('category_id', operator: $category->id)->get();
+    }
 
-            return response()->json([
-                'type' => 'category',
-                'slug' => $slug,
-                'title' => $category->name,
-                'products' => ProductResource::collection($products),
-            ]);
-        }
+    // use search from product repository
+    public function search(Request $request)
+    {
+        $term = $request->input('term', ''); // or $request->query('term')
 
-        // reruen by subcategory
-        $subcategory = Subcategory::where('slug', $slug)->firstOrFail();
-
-        if ($subcategory) {
-            $products = Product::where('subcategory_id', $subcategory->getKey())->get();
-
-            return response()->json([
-                'type' => 'subcategory',
-                'slug' => $slug,
-                'title' => $subcategory->name,
-                'products' => ProductResource::collection($products),
-            ]);
-        }
-
-        // return by family
-        $family = Family::where('slug', $slug)->firstOrFail();
-
-        if ($family) {
-            $products = Product::where('family_id', $family->getKey())->get();
-
-            return response()->json([
-                'type' => 'family',
-                'slug' => $slug,
-                'title' => $family->name,
-                'products' => ProductResource::collection($products),
-            ]);
-        }
-
-        // return by subfamily
-        $subfamily = Subfamily::where('slug', $slug)->firstOrFail();
-
-        if ($subfamily) {
-            $products = Product::where('subfamily_id', $subfamily->id)->get();
-
-            return response()->json([
-                'type' => 'subfamily',
-                'slug' => $slug,
-                'title' => $subfamily->name,
-                'products' => ProductResource::collection($products),
-            ]);
-        }
-
-        abort(404);
-
+        return $this->productRepository->search($term);
     }
 }

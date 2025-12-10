@@ -7,22 +7,28 @@ class ProductFilter extends ApiFilter
     protected $safeParams = [
         'name' => ['eq', 'like'],
         'price' => ['eq', 'lt', 'gt', 'lte', 'gte'],
-        'subfamilyId' => ['eq'],
+        'salePrice' => ['eq', 'lt', 'gt', 'lte', 'gte'],
+        'subfamilyId' => ['eq','in'],
+        'brandId' => ['eq','in'],
+        'price_asc' => ['asc'],
+        'price_desc' => ['desc'],
+        'name_asc' => ['asc'],
+        'name_desc' => ['desc'],
+
         'familyId' => ['eq'],
         'subcategoryId' => ['eq'],
         'categoryId' => ['eq'],
-        'brandId' => ['eq'],
-        'sale_price' => ['eq', 'lt', 'gt', 'lte', 'gte'],
+        'description' => ['like'],
+
     ];
 
     protected $columnMap = [
-        'subfamily' => 'subfamilyId',
-        'family' => 'familyId',
-        'category' => 'categoryId',
-        'subcategory' => 'subcategoryId',
-        'brand' => 'brandId',
-        'sale_price' => 'sale_price',
-        
+        'subfamilyId' => 'subfamily_id',
+        'brandId' => 'brand_id',
+        'price_asc' => 'price',
+        'price_desc' => 'price',
+        'name_asc' => 'name',
+        'name_desc' => 'name',
     ];
 
     protected $operatorMap = [
@@ -32,5 +38,8 @@ class ProductFilter extends ApiFilter
         'lte' => '<=',
         'gte' => '>=',
         'like' => 'like',
+        'asc' => 'asc',
+        'desc' => 'desc',
+        'in' => 'in',
     ];
 }

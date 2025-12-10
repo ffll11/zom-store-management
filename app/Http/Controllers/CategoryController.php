@@ -18,9 +18,6 @@ class CategoryController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function navbar(){
-        return $this->categoryRepository->navbarData();
-    }
 
     public function index(Request $request)
     {

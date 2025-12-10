@@ -27,8 +27,6 @@ class ProductResource extends JsonResource
             'sale_price' => $this->sale_price,
             'brand' => $this->brand ? $this->brand->name : null,
             'brandSlug' => $this->brand ? $this->brand->slug : null,
-
-
         ];
     }
 }

@@ -21,12 +21,12 @@ class Product extends Model
 
     public function brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class ,'brand_id');
     }
 
     public function subfamily()
     {
-        return $this->belongsTo(Subfamily::class);
+        return $this->belongsTo(Subfamily::class, 'subfamily_id');
     }
 
 }
