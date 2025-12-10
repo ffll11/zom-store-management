@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\UuidSet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Banner extends Model
 {
-    use HasFactory;
+    use HasFactory ,UuidSet;
     protected $table = 'banner';
     protected $fillable = ['name', 'image_url', 'description', 'is_active', 'start_date', 'end_date' ];
 

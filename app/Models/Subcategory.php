@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\UuidSet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Subcategory extends Model
 {
-    use HasFactory;
+    use HasFactory,UuidSet;
     protected $fillable = ['name', 'slug', 'description', 'category_id'];
     public function category()
     {
@@ -17,4 +18,5 @@ class Subcategory extends Model
     public function families(){
         return $this->hasMany(Family::class);
     }
+
 }

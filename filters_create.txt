@@ -1,0 +1,6 @@
+//Create Traits
+//Create Enums
+//Create Queyfilter
+//Create PRoduct filters fro query filters
+//CREate Scope for filter in Product Model ->add teh queryfilter
+//Create props in the models
