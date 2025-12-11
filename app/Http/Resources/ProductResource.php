@@ -15,7 +15,7 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->uuid,
+            'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
             'sku' => $this->sku,
@@ -25,8 +25,8 @@ class ProductResource extends JsonResource
             'is_on_sale' => $this->is_on_sale,
             'price' => $this->price,
             'sale_price' => $this->sale_price,
-            'brand' => $this->brand ? $this->brand->name : null,
-            'brandSlug' => $this->brand ? $this->brand->slug : null,
+            'brand' => new BrandResource($this->whenLoaded('Brand')),
+            'subfamily' => new SubfamilyResource($this->whenLoaded('Subfamily')),
         ];
     }
 }

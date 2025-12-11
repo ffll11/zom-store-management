@@ -20,7 +20,7 @@ class Brand extends Model
     return $this->belongsTo(Country::class);
     }
 
-    public function props (){
+    public function Props (){
         return $this->belongsTo(Product::class ,'brand_id');
     }
 }

@@ -49,7 +49,7 @@ Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::cla
 
 Route::get('on-sale', [\App\Http\Controllers\Catalog\ProductController::class, 'getOnSaleProducts']);
 Route::get('latest', [\App\Http\Controllers\Catalog\ProductController::class, 'getLatestProducts']);
-Route::get('products/', action: [\App\Http\Controllers\Catalog\ProductController::class, 'index']);
+Route::get('products', [\App\Http\Controllers\Catalog\ProductController::class, 'index']);
 Route::get('products/{product}', [\App\Http\Controllers\Catalog\ProductController::class, 'show']);
 
 

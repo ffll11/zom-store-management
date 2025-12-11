@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\NabvarResource;
+use App\Http\Resources\NavbarResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Category;
 
@@ -19,23 +21,9 @@ class CategoryRepository implements BaseRepository
     }
 
     public function navbarData(){
-        try {
-            $categories = Category::with([
-                'subcategories.families.subfamilies'
-            ])->get();
+        $categories = Category::with(['subcategories.families.subfamilies'])->get();
 
-            \Illuminate\Support\Facades\Log::info('CategoryRepository@navbarData: fetched categories', [
-                'count' => $categories->count()
-            ]);
-
-            return CategoryResource::collection($categories);
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::error('CategoryRepository@navbarData error', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return "Failed to fetch navbar data";
-        }
+        return NabvarResource::collection($categories);
     }
 
     public function find($id)

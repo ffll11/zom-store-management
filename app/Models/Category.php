@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory ,UuidSet;
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     protected $fillable = ['name', 'slug', 'description'];
     public function subcategories()
     {

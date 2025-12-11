@@ -4,6 +4,7 @@ namespace App\Repositories\Catalog;
 
 use App\Filters\ProductFilter;
 use App\Http\Resources\CatalogResource;
+use App\Http\Resources\ProductPaginateResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Brand;
 use App\Models\Category;
@@ -11,10 +12,14 @@ use App\Models\Family;
 use App\Models\Product;
 use App\Models\Subcategory;
 use App\Models\Subfamily;
+use App\Traits\ApiResponse\ApiResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ProductRepository
 {
+    use ApiResponse;
+
     protected $productFilter;
 
     public function __construct(ProductFilter $productFilter)
@@ -90,69 +95,18 @@ class ProductRepository
 
         return ProductResource::collection($products);
     }
-    /*     public function filters($params)
-        {
-            $query = Product::query()->active();
 
-            $filterItems = $this->productFilter->transform($params);
-
-            foreach ($filterItems as $item) {
-                $query->where($item['column'], $item['operator'], $item['value']);
-            }
-
-            // Filter by brand
-            if ($params->has('brand_ids')) {
-                $query->whereIn('brand_id', explode(',', $params->brand_ids));
-            }
-
-            // Filter by subfamily
-            if ($params->has('subfamily_ids')) {
-                $query->whereIn('subfamily_id', explode(',', $params->subfamily_ids));
-            }
-
-            // Sorting logic
-            if (isset($params['sort'])) {
-                switch ($params['sort']) {
-                    case 'latest':
-                        $query->orderBy('created_at', 'desc');
-                        break;
-
-                    case 'price_asc':
-                        $query->orderBy('price', 'asc');
-                        break;
-
-                    case 'price_desc':
-                        $query->orderBy('price', 'desc');
-                        break;
-                }
-            }
-
-            // Apply pagination directly on query
-            return ProductResource::collection(
-                $query->paginate(10)->appends($params)
-            );
-        } */
-
-    public function filters($params)
+    public function filters($filterSortSearch, Request $request)
     {
-        Log::info('ProductRepository: filters called', ['params' => $params->all()]);
+        Log::info('ProductRepository: filters called with request: '.json_encode($request->all()));
 
-        $queryfilters = $this->productFilter->transform($params);
-        Log::info('ProductRepository: transformed filters', ['filters' => $queryfilters]);
+        // Laravel automatically handles pagination from request
+        $props = Product::filter($filterSortSearch)->active()->with('Brand', 'Subfamily')->paginate(10, ['*'], 'page', $request['page'] ?? 1);
 
-        $products = Product::query()->active();
-        // Apply filters
-        // Apply filters
-        if (! empty($transformed['filters'])) {
-            $products->where($queryfilters['filters']);
-        }
-
-        Log::info('ProductRepository: products query built');
-
-        $paginated = $products->paginate(10)->appends($params);
-        Log::info('ProductRepository: filters result count', ['count' => $paginated->count()]);
-
-        return ProductResource::collection($paginated);
+        return $this->successResponse(
+            new ProductPaginateResource($props),
+            'Products retrieved successfully'
+        );
     }
 
     public function catalog($slug)
@@ -161,15 +115,14 @@ class ProductRepository
 
         // 1. Brand
         if ($brand = Brand::where('slug', $slug)->first()) {
-            $products = Product::where('brand_id', $brand->id)->active()->get(['name', 'price', 'sale_price', 'image_url', 'is_on_sale']);
+            $products = Product::where('brand_id', $brand->id)->active()->with('Brand')->paginate(10, ['*'], 'page', $slug['page'] ?? 1);
+            // Use PRdoct paginated Resource
 
-            $response = new CatalogResource((object) [
-                'title' => $brand->name,
-                'products' => $products,
-            ]);
-
-            Log::info('CatalogController: catalog response: '.$response->toJson());
-
+            $response = $this->successResponse(
+                new ProductPaginateResource($products),
+                'Products retrieved successfully'
+            );
+            Log::info('response from brand catalog: '.json_encode($response));
             return $response;
         }
 
