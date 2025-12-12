@@ -38,7 +38,7 @@ class CatalogController extends Controller
 
     public function navbar()
     {
-        return $this->categoryRepository->navbarData();
+        return $this->categoryRepository->menuData();
     }
 
     public function getFilters()

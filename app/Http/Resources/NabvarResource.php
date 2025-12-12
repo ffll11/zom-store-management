@@ -18,10 +18,6 @@ class NabvarResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'categories' =>CategoryResource::collection($this->whenLoaded('categories')),
-            'subcategories' =>SubcategoryResource::collection($this->whenLoaded('subcategories')),
-            'families' =>FamilyResource::collection($this->whenLoaded('families')),
-            'subfamilies' =>SubfamilyResource::collection($this->whenLoaded('subfamilies')),
         ];
     }
 }

@@ -19,7 +19,7 @@ class FamilyResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'subcategory' => $this->subcategory->name,
+            'subfamily' => new SubfamilyResource($this->whenLoaded('subfamily')),
         ];
     }
 }

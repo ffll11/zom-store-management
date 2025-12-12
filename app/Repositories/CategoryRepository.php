@@ -4,24 +4,27 @@ namespace App\Repositories;
 
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\NabvarResource;
-use App\Http\Resources\NavbarResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Category;
 
 class CategoryRepository implements BaseRepository
 {
-
     public function all($request)
     {
-        if(!Category::all()) {
-            return "No categories found";
+        if (! Category::all()) {
+            return 'No categories found';
         }
 
         return CategoryResource::collection(Category::all());
     }
 
-    public function navbarData(){
-        $categories = Category::with(['subcategories.families.subfamilies'])->get();
+    public function menuData()
+    {
+        $categories = Category::with(['subcategories.families.subfamilies'])->get(['id', 'name', 'slug']);
+
+        if ($categories->isEmpty()) {
+            return 'No categories found';
+        }
 
         return NabvarResource::collection($categories);
     }
@@ -29,7 +32,7 @@ class CategoryRepository implements BaseRepository
     public function find($id)
     {
         if (empty($id)) {
-            return "Id is required";
+            return 'Id is required';
         }
 
         $category = Category::find($id);
@@ -37,13 +40,14 @@ class CategoryRepository implements BaseRepository
         if ($category) {
             return new CategoryResource($category);
         }
-        return "Category not found";
+
+        return 'Category not found';
     }
 
     public function create(array $attributes)
     {
-        if (!$attributes) {
-            return "Attributes are required";
+        if (! $attributes) {
+            return 'Attributes are required';
         }
 
         return new CategoryResource(resource: Category::create($attributes));
@@ -52,11 +56,11 @@ class CategoryRepository implements BaseRepository
     public function update($id, array $attributes)
     {
         if (empty($id)) {
-            return "Id is required";
+            return 'Id is required';
         }
 
-        if (!$attributes) {
-            return "Attributes are required";
+        if (! $attributes) {
+            return 'Attributes are required';
         }
 
         $category = Category::find($id);
@@ -64,9 +68,11 @@ class CategoryRepository implements BaseRepository
         if ($category) {
 
             $category->update($attributes);
+
             return new CategoryResource($category);
         }
-        return "Category not found";
+
+        return 'Category not found';
     }
 
     public function delete($id)
@@ -75,16 +81,17 @@ class CategoryRepository implements BaseRepository
             return null;
         }
 
-        if(empty($id)){
-            return "Id is required";
+        if (empty($id)) {
+            return 'Id is required';
         }
 
         $category = Category::find($id);
 
         if ($category->subcategories()->count() > 0) {
-            return "Cannot delete category with existing subcategories";
-        }else{
+            return 'Cannot delete category with existing subcategories';
+        } else {
             $category->delete();
+
             return response()->noContent();
         }
     }
