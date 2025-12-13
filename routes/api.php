@@ -55,7 +55,7 @@ Route::get('products/{product}', [\App\Http\Controllers\Catalog\ProductControlle
 
 Route::get('search', [\App\Http\Controllers\Catalog\CatalogController::class, 'search']);
 Route::get('banners', [\App\Http\Controllers\Catalog\CatalogController::class, 'banners']);
-Route::get('navbar', [\App\Http\Controllers\Catalog\CatalogController::class, 'navbar']);
+Route::get('menu', [\App\Http\Controllers\Catalog\CatalogController::class, 'menu']);
 Route::get('filters', [\App\Http\Controllers\Catalog\CatalogController::class, 'getFilters']);
 
 //Use Laravel Proxy Route

@@ -3,9 +3,10 @@
 namespace App\Repositories;
 
 use App\Http\Resources\CategoryResource;
-use App\Http\Resources\NabvarResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CategoryRepository implements BaseRepository
 {
@@ -20,13 +21,74 @@ class CategoryRepository implements BaseRepository
 
     public function menuData()
     {
-        $categories = Category::with(['subcategories.families.subfamilies'])->get(['id', 'name', 'slug']);
+        $rows = DB::table('menu_view')->get();
 
-        if ($categories->isEmpty()) {
-            return 'No categories found';
+        // Convert to json
+
+        $menu = [];
+
+        foreach ($rows as $row) {
+
+            // ---- CATEGORIES ----
+            if (! isset($menu[$row->category_slug])) {
+                $menu[$row->category_slug] = [
+                    'id' => $row->category_id,
+                    'name' => $row->category_name,
+                    'slug' => $row->category_slug,
+                    'subcategories' => [],
+                ];
+            }
+
+            // ---- SUBCATEGORIES ----
+            if (! isset($menu[$row->category_slug]['subcategories'][$row->subcategory_slug])) {
+                $menu[$row->category_slug]['subcategories'][$row->subcategory_slug] = [
+                    'id' => $row->subcategory_id,
+                    'name' => $row->subcategory_name,
+                    'slug' => $row->subcategory_slug,
+                    'families' => [],
+                ];
+            }
+
+            // ---- FAMILIES ----
+            if (! isset($menu[$row->category_slug]['subcategories'][$row->subcategory_slug]['families'][$row->family_slug])) {
+                $menu[$row->category_slug]['subcategories'][$row->subcategory_slug]['families'][$row->family_slug] = [
+                    'id' => $row->family_id,
+                    'name' => $row->family_name,
+                    'slug' => $row->family_slug,
+                    'subfamilies' => [],
+                ];
+            }
+
+            // ---- SUBFAMILIES ----
+            $menu[$row->category_slug]['subcategories'][$row->subcategory_slug]['families'][$row->family_slug]['subfamilies'][] = [
+                'id' => $row->subfamily_id,
+                'name' => $row->subfamily_name,
+                'slug' => $row->subfamily_slug,
+            ];
         }
 
-        return NabvarResource::collection($categories);
+        // Convert associative keys to clean arrays
+        $menu = array_values(array_map(function ($cat) {
+            $cat['subcategories'] = array_values(array_map(function ($sub) {
+                $sub['families'] = array_values(array_map(function ($fam) {
+                    return $fam;
+                }, $sub['families']));
+
+                return $sub;
+            }, $cat['subcategories']));
+
+            return $cat;
+        }, $menu));
+        Log::info('Menu JSON:', $menu);
+
+        $response = response()->json([
+            'data' => $menu,
+        ]);
+
+        Log::info('menu response', ['response' => $response]);
+
+        return $response;
+
     }
 
     public function find($id)

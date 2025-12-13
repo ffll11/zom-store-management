@@ -27,6 +27,8 @@ class ProductResource extends JsonResource
             'sale_price' => $this->sale_price,
             'brand' => new BrandResource($this->whenLoaded('Brand')),
             'subfamily' => new SubfamilyResource($this->whenLoaded('Subfamily')),
+            'brand_name' => $this->brand->name,
+            'brand_slug' => $this->brand->slug,
         ];
     }
 }

@@ -3,12 +3,7 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CatalogResource;
 use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Family;
-use App\Models\Product;
-use App\Models\Subcategory;
 use App\Models\Subfamily;
 use App\Repositories\BannerRepository;
 use App\Repositories\Catalog\ProductRepository;
@@ -36,14 +31,16 @@ class CatalogController extends Controller
         return $this->bannerRepository->activeBanners();
     }
 
-    public function navbar()
+    public function menu()
     {
+        Log::info('Fetching menu data');
+
         return $this->categoryRepository->menuData();
+
     }
 
     public function getFilters()
     {
-
         // Brands
         $brands = Brand::all(['id', 'name', 'slug']);
 
