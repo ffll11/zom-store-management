@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Catalog;
 
-use App\Filters\ProductFilter;
+use App\Filters\QueryV2\ProductAllFilter;
 use App\Http\Resources\ProductPaginateResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Brand;
@@ -11,6 +11,7 @@ use App\Models\Family;
 use App\Models\Product;
 use App\Models\Subcategory;
 use App\Models\Subfamily;
+use App\Services\MenuContextResolver;
 use App\Traits\ApiResponse\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,13 +19,6 @@ use Illuminate\Support\Facades\Log;
 class ProductRepository
 {
     use ApiResponse;
-
-    protected $productFilter;
-
-    public function __construct(ProductFilter $productFilter)
-    {
-        $this->productFilter = $productFilter;
-    }
 
     public function getOnSaleProducts()
     {
@@ -74,7 +68,7 @@ class ProductRepository
     {
         $query = Product::active()
             ->when($term, function ($query, $term) {
-                $search = is_array($term) ? implode(' ', $term) : $term;
+                $search = is_array(value: $term) ? implode(' ', $term) : $term;
                 $words = preg_split('/\s+/', trim($search));
                 $query->where(function ($q) use ($words) {
                     foreach (array_filter($words) as $word) {
@@ -95,67 +89,82 @@ class ProductRepository
         return ProductResource::collection($products);
     }
 
-    public function filters($filterSortSearch, Request $request)
+    public function catalog(ProductAllFilter $filters, Request $request, string $slug)
     {
         Log::info('ProductRepository: filters called with request: '.json_encode($request->all()));
 
-        // Laravel automatically handles pagination from request
-        $props = Product::filter($filterSortSearch)->active()->with('Brand', 'Subfamily')->paginate(10, ['*'], 'page', $request['page'] ?? 1);
+        // 1️⃣ Base query
+        $query = Product::active()->with('brand', 'subfamily');
+
+        // 2️⃣ MENU CONTEXT (if present)
+        // MENU CONTEXT
+        $query = MenuContextResolver::apply($query, $slug);
+
+        // FILTERS
+        $query = $filters->apply($query);
+
+        $products = $query->paginate(
+            10,
+            ['*'],
+            'page',
+            $request->query('page', 1)
+        );
 
         return $this->successResponse(
-            new ProductPaginateResource($props),
+            new ProductPaginateResource($products),
             'Products retrieved successfully'
         );
     }
 
-    public function catalog($slug)
-    {
-        Log::info("CatalogController: catalog called with slug: $slug");
+    /*
+        public function catalog($slug)
+        {
+            Log::info("CatalogController: catalog called with slug: $slug");
 
-        // 1. Brand
-        if ($brand = Brand::where('slug', $slug)->first()) {
-            $products = Product::where('brand_id', $brand->getKey())->active()->with('Brand')->paginate(10);
+            // 1. Brand
+            if ($brand = Brand::where('slug', $slug)->first()) {
+                $products = Product::where('brand_id', $brand->getKey())->active()->with('Brand')->paginate(10);
 
-            return $this->successResponse(
-                new ProductPaginateResource($products),
-                'Products retrieved successfully'
-            );
-        }
+                return $this->successResponse(
+                    new ProductPaginateResource($products),
+                    'Products retrieved successfully'
+                );
+            }
 
-        // 2. Category (through subcategories → subfamilies → families)
-        if ($category = Category::where('slug', $slug)->first()) {
-            $products = Product::whereHas('subfamily.family.subcategory', function ($q) use ($category) {
-                $q->where('category_id', $category->getKey());
-            })->active()->paginate(10);
+            // 2. Category (through subcategories → subfamilies → families)
+            if ($category = Category::where('slug', $slug)->first()) {
+                $products = Product::whereHas('subfamily.family.subcategory', function ($q) use ($category) {
+                    $q->where('category_id', $category->getKey());
+                })->active()->paginate(10);
 
-            return new ProductPaginateResource($products);
-        }
+                return new ProductPaginateResource($products);
+            }
 
-        // 3. Subcategory
-        if ($subcategory = Subcategory::where('slug', $slug)->first()) {
-            $products = Product::whereHas('subfamily.family', function ($q) use ($subcategory) {
-                $q->where('subcategory_id', $subcategory->getKey());
-            })->active()->paginate(10);
+            // 3. Subcategory
+            if ($subcategory = Subcategory::where('slug', $slug)->first()) {
+                $products = Product::whereHas('subfamily.family', function ($q) use ($subcategory) {
+                    $q->where('subcategory_id', $subcategory->getKey());
+                })->active()->paginate(10);
 
-            return new ProductPaginateResource($products);
-        }
+                return new ProductPaginateResource($products);
+            }
 
-        // 4. Family
-        if ($family = Family::where('slug', $slug)->first()) {
-            $products = Product::whereHas('subfamily', function ($q) use ($family) {
-                $q->where('family_id', $family->getKey());
-            })->active()->paginate(10);
+            // 4. Family
+            if ($family = Family::where('slug', $slug)->first()) {
+                $products = Product::whereHas('subfamily', function ($q) use ($family) {
+                    $q->where('family_id', $family->getKey());
+                })->active()->paginate(10);
 
-            return new ProductPaginateResource($products);
-        }
+                return new ProductPaginateResource($products);
+            }
 
-        // 5. Subfamily
-        if ($subfamily = Subfamily::where('slug', $slug)->first()) {
-            $products = Product::where('subfamily_id', $subfamily->getKey())->active()->paginate(10);
+            // 5. Subfamily
+            if ($subfamily = Subfamily::where('slug', $slug)->first()) {
+                $products = Product::where('subfamily_id', $subfamily->getKey())->active()->paginate(10);
 
-            return new ProductPaginateResource($products);
-        }
+                return new ProductPaginateResource($products);
+            }
 
-        abort(404);
-    }
+            abort(404);
+        } */
 }

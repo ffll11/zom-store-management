@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Catalog;
 
+use App\Filters\QueryV2\ProductAllFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Subfamily;
@@ -26,6 +27,14 @@ class CatalogController extends Controller
         $this->categoryRepository = $categoryRepository;
     }
 
+    public function index(
+        ProductAllFilter $filters,
+        Request $request,
+        string $slug
+    ) {
+        return $this->productRepository->catalog($filters, $request, $slug);
+    }
+
     public function banners()
     {
         return $this->bannerRepository->activeBanners();
@@ -36,7 +45,6 @@ class CatalogController extends Controller
         Log::info('Fetching menu data');
 
         return $this->categoryRepository->menuData();
-
     }
 
     public function getFilters()

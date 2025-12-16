@@ -29,6 +29,18 @@ class QueryAllFilter
 
     }
 
+    /**
+     * Searches across multiple fields for a given search term.
+     *
+     * This method retrieves the search query parameter from the request and applies
+     * a WHERE clause to the query builder that matches the search term across the
+     * specified fields using LIKE operators.
+     *
+     * @param  array  $fields  The database fields to search across
+     * @param  string|array  $searchTerm  The search term(s) to look for. Can be a string or array of strings
+     * @return \Illuminate\Database\Eloquent\Builder|mixed The query builder instance with search conditions applied,
+     *                                                     or the original builder if no search parameter is provided
+     */
     protected function searchIn($fields, $searchTerm)
     {
         $searchParam = $this->request->query(key: 'search');
@@ -38,8 +50,16 @@ class QueryAllFilter
 
         return $this->builder->where(function ($query) use ($fields, $searchTerm) {
             foreach ($fields as $field) {
-                $query->orWhere($field, 'LIKE', '%'.$searchTerm.'%');
+
+                $search = \is_array($searchTerm) ? implode(' ', $searchTerm) : $searchTerm;
+                $words = preg_split('/\s+/', trim($search));
+                $query->where(function ($q) use ($field, $words) {
+                    foreach (array_filter($words) as $word) {
+                        $q->orWhere($field, 'name', 'like', "%{$word}%");
+                    }
+                });
             }
+
         });
     }
 
@@ -70,7 +90,7 @@ class QueryAllFilter
 
         $this->builder = $builder;
 
-        foreach ($this->request->all() as $key => $value) {
+        foreach ($this->request->query() as $key => $value) {
             if (method_exists($this, $key)) {
                 $this->$key($value);
             }

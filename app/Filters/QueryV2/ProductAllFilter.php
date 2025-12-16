@@ -9,7 +9,7 @@ class ProductAllFilter extends QueryAllFilter
     {
         $ids = explode(',', $brandIds);
 
-        return $this->builder->whereIn('brand_id', $ids);
+         $this->builder->whereIn('brand_id', $ids);
     }
 
     // Where has the category id in array
@@ -17,19 +17,19 @@ class ProductAllFilter extends QueryAllFilter
     {
         $ids = explode(',', $subfamilyIds);
 
-        return $this->builder->whereIn('subfamily_id', $ids);
+         $this->builder->whereIn('subfamily_id', $ids);
     }
 
     // Search the name field
     public function name($value)
     {
-        return $this->searchIn(['name'], $value);
+         $this->searchIn(['name'], $value);
     }
 
     // Search the description field
     public function description($value)
     {
-        return $this->searchIn(['description'], $value);
+         $this->searchIn(['description'], $value);
     }
 
     // Order by field_direction
@@ -42,7 +42,38 @@ class ProductAllFilter extends QueryAllFilter
 
             $direction = in_array(strtolower($direction), ['asc', 'desc']) ? $direction : 'asc';
 
-            return $this->builder->orderBy($field, $direction);
+             $this->builder->orderBy($field, $direction);
         }
+    }
+
+    public function menuSlug($value)
+    {
+        // 1. Brand
+        if ($brand = \App\Models\Brand::where('slug', $value)->first()) {
+            return $this->builder->where('brand_id', $brand->id);
+        }
+
+        // 2. Category
+        if ($category = \App\Models\Category::where('slug', $value)->first()) {
+            return $this->builder->whereHas('subfamily.family.subcategory', function ($q) use ($category) {
+                $q->where('category_id', $category->id);
+            });
+        }
+
+        // 3. Subcategory
+        if ($subcategory = \App\Models\Subcategory::where('slug', $value)->first()) {
+            return $this->builder->whereHas('subfamily.family', function ($q) use ($subcategory) {
+                $q->where('subcategory_id', $subcategory->id);
+            });
+        }
+
+        // 4. Family
+        if ($family = \App\Models\Family::where('slug', $value)->first()) {
+            return $this->builder->whereHas('subfamily', function ($q) use ($family) {
+                $q->where('family_id', $family->id);
+            });
+        }
+
+        abort(404);
     }
 }

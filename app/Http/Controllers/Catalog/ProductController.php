@@ -16,17 +16,6 @@ class ProductController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    public function index(ProductAllFilter $filterAll, Request $request)
-    {
-        // If slug is present, return catalog
-        if ($request->has('slug')) {
-            return $this->productRepository->catalog($request->query('slug'));
-        }
-
-        // DEFAULT: Apply filters
-        return $this->productRepository->filters($filterAll, $request);
-    }
-
     public function getOnSaleProducts()
     {
         return $this->productRepository->getOnSaleProducts();
