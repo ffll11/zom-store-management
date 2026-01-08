@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.8"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "*",
         "fakerphp/faker": "^1.9.1",
         "laradumps/laradumps": "4.0",
         "laravel/breeze": "^1.29",

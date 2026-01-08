@@ -4,3 +4,12 @@
 //Create PRoduct filters fro query filters
 //CREate Scope for filter in Product Model ->add teh queryfilter
 //Create props in the models
+
+//Clone issues
+install composer again
+
+Create a new log file ,just run a log tests
+
+install
+ composer require --dev barryvdh/laravel-ide-helper
+php artisan ide-helper:generate

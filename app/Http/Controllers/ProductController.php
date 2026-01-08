@@ -7,8 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
-use Log;
-
+use Illuminate\Support\Facades\Log;
 class ProductController extends Controller
 {
     protected $productRepository;
@@ -16,10 +15,16 @@ class ProductController extends Controller
     {
         $this->productRepository = $productRepository;
     }
-    public function index(Request $request)
+    public function index()
     {
-        Log::info('ProductController index called with request: ', $request->all());
-        return $this->productRepository->all($request);
+        Log::info('ProductController index called');
+        return $this->productRepository->getProducts();
+    }
+
+    public function filteredProducts(Request $request)
+    {
+        Log::info('ProductController filteredProducts called with request: ', $request->all());
+        return $this->productRepository->filteredProducts($request);
     }
     public function store(StoreProductRequest $request)
     {

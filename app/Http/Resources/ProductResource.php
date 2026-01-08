@@ -28,6 +28,7 @@ class ProductResource extends JsonResource
             'brand' => new BrandResource($this->whenLoaded('Brand')),
             'subfamily' => new SubfamilyResource($this->whenLoaded('Subfamily')),
             'brand_name' => $this->brand->name,
+            'subfamily_name' => $this->subfamily->name,
             'brand_slug' => $this->brand->slug,
         ];
     }
