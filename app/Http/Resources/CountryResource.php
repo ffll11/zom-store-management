@@ -5,14 +5,13 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BrandResource extends JsonResource
+class CountryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-
     public function toArray(Request $request): array
     {
         return [
@@ -20,8 +19,7 @@ class BrandResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'country_id' => $this->country->id ?? null,
-            'country_name' => $this->country->name ?? null,
+
         ];
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    use HasFactory ,UuidSet;
+    use HasFactory ;
 
     protected $fillable = ['name' , 'slug','description','country_id'];
 

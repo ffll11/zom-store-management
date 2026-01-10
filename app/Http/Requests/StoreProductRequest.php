@@ -26,6 +26,8 @@ class StoreProductRequest extends FormRequest
             'slug' => 'required|string|max:255|unique:products,slug',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0|lt:price',
+            'is_on_sale' => 'required|boolean',
             'is_active' => 'required|boolean',
             'brand_id' => 'required|exists:brands,id',
             'subfamily_id' => 'required|exists:subfamilies,id',

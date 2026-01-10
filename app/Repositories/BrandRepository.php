@@ -6,6 +6,7 @@ use App\Filters\BrandFilter;
 use App\Http\Resources\BrandResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Brand;
+use App\Models\Country;
 use Illuminate\Support\Facades\Log;
 
 class BrandRepository implements BaseRepository
@@ -52,14 +53,26 @@ class BrandRepository implements BaseRepository
         return BrandResource::collection(resource: Brand::all());
     }
 
-    public function getName()
+    public function getNameBrand()
     {
-        if (! Brand::all()) {
-            return 'No brands found';
-        }
+        Log::info('Fetching brand names');
 
-        return BrandResource::collection(resource: Brand::get(['id', 'name']));
+        $brands = Brand::query()->select('id', 'name')->get();
 
+        Log::info('Brand names fetched: ' . $brands->count() . ' records');
+
+        return response()->json($brands, 200);
+    }
+
+    public function getCountries()
+    {
+        Log::info('Fetching brand countries');
+
+        $countries = Country::query()->select('id', 'name')->get();
+
+        Log::info('Brand countries fetched: ' . $countries->count() . ' records');
+
+        return response()->json($countries,200);
     }
 
     public function find($id)

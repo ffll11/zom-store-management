@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 });
  */
 Route::apiResource('brands', \App\Http\Controllers\BrandController::class);
+Route::apiResource('banners', \App\Http\Controllers\BannerController::class);
 Route::apiResource('categories', \App\Http\Controllers\CategoryController::class);
 Route::apiResource('families', \App\Http\Controllers\FamilyController::class);
 Route::apiResource('products', \App\Http\Controllers\ProductController::class);
@@ -33,6 +34,10 @@ Route::apiResource('subcategories', \App\Http\Controllers\SubcategoryController:
 Route::apiResource('subfamilies', \App\Http\Controllers\SubfamilyController::class);
 Route::apiResource('users', \App\Http\Controllers\UserController::class);
 Route::apiResource('roles', \App\Http\Controllers\RoleController::class);
+
+Route::get('brand-names', [\App\Http\Controllers\BrandController::class, 'getBrandNames']);
+Route::get('countries', [\App\Http\Controllers\BrandController::class, 'getCountry']);
+Route::get('subfamily-names', [\App\Http\Controllers\SubfamilyController::class, 'getSubfamilyNames']);
 
 // Route Employee Access Example
 

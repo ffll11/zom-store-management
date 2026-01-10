@@ -20,6 +20,10 @@ class SubfamilyController extends Controller
         return $this->subfamilyRepository->all($request);
     }
 
+    public function getSubfamilyNames()
+    {
+        return $this->subfamilyRepository->getNameSubfamily();
+    }
     public function store(StoreSubfamilyRequest $request)
     {
         return $this->subfamilyRepository->create($request->validated());

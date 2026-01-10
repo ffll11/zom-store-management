@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     use HasFactory;
-      protected $fillable = ['name' , 'slug','description'];
 
-      public function brands(){
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    protected $fillable = ['name', 'slug', 'description'];
+
+    public function brands()
+    {
         return $this->hasMany(Brand::class);
-      }
+    }
 }

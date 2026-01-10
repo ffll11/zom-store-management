@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Interfaces\BaseRepository;
 use App\Http\Resources\SubfamilyResource;
 use App\Models\Subfamily;
+use Illuminate\Support\Facades\Log;
 
 class SubfamilyRepository implements BaseRepository
 {
@@ -14,6 +15,13 @@ class SubfamilyRepository implements BaseRepository
         }
 
         return SubfamilyResource::collection(Subfamily::all());
+    }
+
+    public function getNameSubfamily()
+    {
+       $subfamily =  Subfamily::query()->select('id', 'name')->get();
+
+        return response()->json($subfamily,200);
     }
 
     public function find($id)
