@@ -18,8 +18,4 @@ class Subfamily extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function Props (){
-        return $this->belongsTo(Product::class ,'subfamily_id');
-    }
-
 }

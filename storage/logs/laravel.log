@@ -4894,3 +4894,45 @@ Did you mean one of these?
 [2026-01-10 07:24:32] local.INFO: Fetching brand countries  
 [2026-01-10 07:24:32] local.INFO: Brand countries fetched: 6 records  
 [2026-01-10 07:25:22] local.INFO: Storing new brand with data: {"name":"Test Brand 2","slug":"test-brand-2-slug","description":"Test brand des","country_id":"3"}  
+[2026-01-10 07:36:06] local.INFO: ProductController index called  
+[2026-01-10 07:36:06] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:36:07] local.INFO: ProductController index called  
+[2026-01-10 07:36:07] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:37:47] local.INFO: ProductController index called  
+[2026-01-10 07:37:48] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:37:48] local.INFO: ProductController index called  
+[2026-01-10 07:37:49] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:37:50] local.INFO: ProductController index called  
+[2026-01-10 07:37:50] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:37:50] local.INFO: ProductController index called  
+[2026-01-10 07:37:51] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:37:58] local.INFO: ProductController index called  
+[2026-01-10 07:37:58] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:37:59] local.INFO: ProductController index called  
+[2026-01-10 07:37:59] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:38:27] local.INFO: ProductController index called  
+[2026-01-10 07:38:27] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:38:28] local.INFO: ProductController index called  
+[2026-01-10 07:38:28] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:38:29] local.INFO: ProductController index called  
+[2026-01-10 07:38:29] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:38:29] local.INFO: ProductController index called  
+[2026-01-10 07:38:30] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:42:22] local.INFO: ProductController index called  
+[2026-01-10 07:42:23] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:42:23] local.INFO: ProductController index called  
+[2026-01-10 07:42:24] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:43:03] local.INFO: Fetching all brands  
+[2026-01-10 07:43:03] local.INFO: Fetching all brands  
+[2026-01-10 07:54:28] local.INFO: Fetching all brands  
+[2026-01-10 07:54:29] local.INFO: Fetching all brands  
+[2026-01-10 07:55:01] local.INFO: ProductController index called  
+[2026-01-10 07:55:01] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:55:02] local.INFO: ProductController index called  
+[2026-01-10 07:55:02] local.INFO: Fetching all products without filters.  
+[2026-01-10 07:55:07] local.INFO: Fetching all brands  
+[2026-01-10 07:55:08] local.INFO: Fetching all brands  
+[2026-01-10 07:59:24] local.INFO: Fetching all brands  
+[2026-01-10 07:59:24] local.INFO: Fetching all brands  
+[2026-01-10 08:06:38] local.INFO: Fetching all brands  
+[2026-01-10 08:06:39] local.INFO: Fetching all brands  

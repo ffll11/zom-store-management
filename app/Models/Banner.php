@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Banner extends Model
 {
-    use HasFactory ,UuidSet;
+    use HasFactory ;
     protected $table = 'banner';
     protected $fillable = ['name', 'image_url', 'description', 'is_active', 'start_date', 'end_date' ];
 

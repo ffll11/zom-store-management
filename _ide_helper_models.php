@@ -147,39 +147,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $category_id
- * @property string $category_name
- * @property string $category_slug
- * @property int $subcategory_id
- * @property string $subcategory_name
- * @property string $subcategory_slug
- * @property int $family_id
- * @property string $family_name
- * @property string $family_slug
- * @property int $subfamily_id
- * @property string $subfamily_name
- * @property string $subfamily_slug
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView query()
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereCategoryName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereCategorySlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereFamilyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereFamilyName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereFamilySlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereSubcategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereSubcategoryName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereSubcategorySlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereSubfamilyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereSubfamilyName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MenuView whereSubfamilySlug($value)
- */
-	class MenuView extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
  * @property int $id
  * @property string $name
  * @property string|null $image_url
@@ -200,7 +167,6 @@ namespace App\Models{
  * @property-read \App\Models\Subfamily $subfamily
  * @method static \Illuminate\Database\Eloquent\Builder|Product active()
  * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Product filter(\App\Filters\QueryV2\QueryAllFilter $filter)
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product onSale()
@@ -306,7 +272,6 @@ namespace App\Models{
  * @property int $family_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Product|null $Props
  * @property-read \App\Models\Family $family
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
  * @property-read int|null $products_count
