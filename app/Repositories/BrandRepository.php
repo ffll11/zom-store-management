@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Filters\BrandFilter;
+use App\Http\Resources\BrandPaginateResource;
 use App\Http\Resources\BrandResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Brand;
@@ -18,39 +19,25 @@ class BrandRepository implements BaseRepository
         $this->brandFilter = $brandFilter;
     }
 
-    public function filteredBrand($request)
-    {
-        if (! Brand::all()) {
-            return 'No brands found';
-        }
-        if ($request) {
-
-            $queryItems = $this->brandFilter->transform($request);
-
-            if ($queryItems) {
-
-                $brands = Brand::where($queryItems);
-                if ($brands->count() == 0) {
-                    return 'No brands match the given criteria.';
-                }
-
-                return BrandResource::collection($brands->paginate(10)->appends($request->query()));
-            }
-        }
-
-        return BrandResource::collection(Brand::paginate(10));
-    }
-
     public function all($request)
     {
-
-        if (! Brand::all()) {
-            return 'No brands found';
+        $query = Brand::query();
+        $query = $this->brandFilter->apply($query);
+        if ($query->count() === 0) {
+            return response()->json([
+                'message' => 'No brands match the given criteria.',
+            ], 404);
         }
+        Log::info('Fetching filtered brands.');
 
-        Log::info('Fetching all brands');
+        $brands = $query->paginate(
+            10,
+            ['*'],
+            'page',
+            $request->get('page', 1)
+        );
 
-        return BrandResource::collection(resource: Brand::all());
+        return BrandPaginateResource::collection($brands);
     }
 
     public function getNameBrand()
@@ -59,7 +46,7 @@ class BrandRepository implements BaseRepository
 
         $brands = Brand::query()->select('id', 'name')->get();
 
-        Log::info('Brand names fetched: ' . $brands->count() . ' records');
+        Log::info('Brand names fetched: '.$brands->count().' records');
 
         return response()->json($brands, 200);
     }
@@ -70,9 +57,9 @@ class BrandRepository implements BaseRepository
 
         $countries = Country::query()->select('id', 'name')->get();
 
-        Log::info('Brand countries fetched: ' . $countries->count() . ' records');
+        Log::info('Brand countries fetched: '.$countries->count().' records');
 
-        return response()->json($countries,200);
+        return response()->json($countries, 200);
     }
 
     public function find($id)

@@ -19,14 +19,9 @@ class ProductController extends Controller
     public function index()
     {
         Log::info('ProductController index called');
-        return $this->productRepository->getProducts();
+        return $this->productRepository->all(request());
     }
 
-    public function filteredProducts(Request $request)
-    {
-        Log::info('ProductController filteredProducts called with request: ', $request->all());
-        return $this->productRepository->filteredProducts($request);
-    }
     public function store(StoreProductRequest $request)
     {
         return $this->productRepository->create($request->validated());
