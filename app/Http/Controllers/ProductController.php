@@ -14,6 +14,7 @@ class ProductController extends Controller
     public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
+        $this->authorizeResource(Product::class, 'product');
     }
     public function index()
     {

@@ -18,6 +18,7 @@ class BrandController extends Controller
     public function __construct(BrandRepository $brandRepository)
     {
         $this->brandRepository = $brandRepository;
+        $this->authorizeResource(Brand::class, 'brand');
     }
 
     public function index(Request $request)
