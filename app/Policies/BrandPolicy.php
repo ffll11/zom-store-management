@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Brand;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class BrandPolicy
 {
@@ -14,6 +13,11 @@ class BrandPolicy
     public function viewAny(User $user): bool
     {
         //
+        return in_array($user->role_id, [
+            User::ROLE_ADMIN,
+            User::ROLE_MANAGER,
+            User::ROLE_STAFF,
+        ]);
     }
 
     /**
@@ -22,6 +26,11 @@ class BrandPolicy
     public function view(User $user, Brand $brand): bool
     {
         //
+        return in_array($user->role_id, [
+            User::ROLE_ADMIN,
+            User::ROLE_MANAGER,
+            User::ROLE_STAFF,
+        ]);
     }
 
     /**
@@ -29,7 +38,10 @@ class BrandPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return in_array($user->role_id, [
+            User::ROLE_ADMIN,
+            User::ROLE_MANAGER,
+        ]);
     }
 
     /**
@@ -38,6 +50,10 @@ class BrandPolicy
     public function update(User $user, Brand $brand): bool
     {
         //
+        return in_array($user->role_id, [
+            User::ROLE_ADMIN,
+            User::ROLE_MANAGER,
+        ]);
     }
 
     /**
@@ -46,6 +62,7 @@ class BrandPolicy
     public function delete(User $user, Brand $brand): bool
     {
         //
+        return $user->role_id === User::ROLE_ADMIN;
     }
 
     /**
@@ -54,6 +71,7 @@ class BrandPolicy
     public function restore(User $user, Brand $brand): bool
     {
         //
+        return $user->role_id === User::ROLE_ADMIN;
     }
 
     /**
@@ -62,5 +80,6 @@ class BrandPolicy
     public function forceDelete(User $user, Brand $brand): bool
     {
         //
+        return $user->role_id === User::ROLE_ADMIN;
     }
 }

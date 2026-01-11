@@ -44,6 +44,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public const ROLE_ADMIN = 1;
+
+    public const ROLE_MANAGER = 2;
+
+    public const ROLE_STAFF = 3;
+
     public function role()
     {
         return $this->belongsTo(Role::class);

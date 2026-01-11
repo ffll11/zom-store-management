@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\ProductRepository;
 use App\Repositories\RoleRepository;
@@ -11,19 +12,21 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     protected $userRepository;
+
     protected $productRepository;
+
     protected $roleRepository;
-    public function __construct(UserRepository $userRepository ,ProductRepository $productRepository ,RoleRepository $roleRepository)
+
+    public function __construct(UserRepository $userRepository, ProductRepository $productRepository, RoleRepository $roleRepository)
     {
-        $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('can:access-admin');
+
         $this->userRepository = $userRepository;
         $this->productRepository = $productRepository;
         $this->roleRepository = $roleRepository;
     }
 
-
-    public function getUsers( Request $request)
+    public function getUsers(Request $request)
     {
         return $this->userRepository->all($request);
     }
@@ -39,7 +42,10 @@ class AdminController extends Controller
     }
 
     public function deleteUser(Request $request, $id)
+
     {
+        $this->authorize('delete', User::class);
+        
         return $this->userRepository->delete($id);
     }
 
@@ -47,5 +53,4 @@ class AdminController extends Controller
     {
         return $this->productRepository->all($request);
     }
-
 }

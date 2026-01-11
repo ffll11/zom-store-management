@@ -41,6 +41,7 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('admin-actions');
         return $this->productRepository->delete($id);
     }
 

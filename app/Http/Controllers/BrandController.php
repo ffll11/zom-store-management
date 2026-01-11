@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\CountryResource;
+use App\Models\Brand;
 use App\Models\Country;
 use App\Repositories\BrandRepository;
 use Illuminate\Http\Request;
@@ -62,6 +63,9 @@ class BrandController extends Controller
 
     public function destroy($id)
     {
+        //Use gate and policy
+        $this->authorize('delete', Brand::class);
+
         return $this->brandRepository->delete($id);
     }
 }
