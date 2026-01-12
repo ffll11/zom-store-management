@@ -2,42 +2,66 @@
 
 namespace App\Repositories;
 
-use App\Filters\BrandFilter;
-use App\Http\Resources\BrandPaginateResource;
 use App\Http\Resources\BrandResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Brand;
 use App\Models\Country;
+use App\Models\Product;
+use App\Query\ApiSearch;
+use App\Query\ApiSort;
 use Illuminate\Support\Facades\Log;
 
 class BrandRepository implements BaseRepository
 {
-    protected $brandFilter;
-
-    public function __construct(BrandFilter $brandFilter)
+    public function all($request = null)
     {
-        $this->brandFilter = $brandFilter;
+        $request->validate([
+            'order_by' => 'sometimes|in:asc,desc',
+            'country_id' => 'sometimes|exists:countries,id',
+            'page' => 'sometimes|integer|min:1',
+        ]);
+
     }
 
-    public function all($request)
+    public function allBrands($request = null)
     {
-        $query = Brand::query();
-        $query = $this->brandFilter->apply($query);
-        if ($query->count() === 0) {
-            return response()->json([
-                'message' => 'No brands match the given criteria.',
-            ], 404);
+
+
+        if ($request) {
+            
+            $query = Product::query();
+
+            // Search
+            $search = new ApiSearch(
+                searchableFields: ['name', 'description'],
+                columnMap: [
+                    'name' => 'name',
+                    'description' => 'description',
+                ]
+            );
+
+            $query = $search->apply($request, $query) ?? $query;
+
+            // Sort
+            $sort = new ApiSort(
+                allowedSorts: ['name_asc','name_desc'],
+                columnMap: [
+                    'name' => 'name',
+
+                ]
+            );
+
+            $query = $sort->apply($request, $query) ?? $query;
+
+            return BrandResource::collection($query->paginate(10)->appends($request->query()));
+
         }
-        Log::info('Fetching filtered brands.');
 
-        $brands = $query->paginate(
-            10,
-            ['*'],
-            'page',
-            $request->get('page', 1)
-        );
+        Log::info('Fetching all brands without filters');
+        $brand = Brand::paginate(10);
 
-        return BrandPaginateResource::collection($brands);
+        return BrandResource::collection($brand);
+
     }
 
     public function getNameBrand()

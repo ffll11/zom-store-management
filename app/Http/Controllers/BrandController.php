@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
-use App\Http\Resources\CountryResource;
 use App\Models\Brand;
-use App\Models\Country;
 use App\Repositories\BrandRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,12 +16,12 @@ class BrandController extends Controller
     public function __construct(BrandRepository $brandRepository)
     {
         $this->brandRepository = $brandRepository;
-        $this->authorizeResource(Brand::class, 'brand');
+        //  $this->authorizeResource(Brand::class, 'brand');
     }
 
     public function index(Request $request)
     {
-        return $this->brandRepository->all($request);
+        return $this->brandRepository->allBrands($request);
     }
 
     public function getBrandNames()
@@ -64,8 +62,7 @@ class BrandController extends Controller
 
     public function destroy($id)
     {
-        //Use gate and policy
-        $this->authorize('delete', Brand::class);
+        // Use gate and policy
 
         return $this->brandRepository->delete($id);
     }
