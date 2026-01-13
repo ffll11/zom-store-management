@@ -14,12 +14,11 @@ class ProductController extends Controller
     public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
-        $this->authorizeResource(Product::class, 'product');
+      //  $this->authorizeResource(Product::class, 'product');
     }
-    public function index()
+    public function index(Request $request)
     {
-        Log::info('ProductController index called');
-        return $this->productRepository->all(request());
+        return $this->productRepository->all($request);
     }
 
     public function store(StoreProductRequest $request)
@@ -41,8 +40,5 @@ class ProductController extends Controller
         return $this->productRepository->delete($id);
     }
 
-    public function activePromotions($request)
-    {
-        return $this->productRepository->activePromotions($request);
-    }
+
 }

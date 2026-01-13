@@ -2,55 +2,55 @@
 
 namespace App\Repositories;
 
-use App\Filters\ProductFilter;
-use App\Http\Resources\ProductPaginateResource;
 use App\Http\Resources\ProductResource;
 use App\Interfaces\BaseRepository;
 use App\Models\Product;
+use App\Query\ApiSearch;
+use App\Query\ApiSort;
 use Illuminate\Support\Facades\Log;
 
 class ProductRepository implements BaseRepository
 {
     protected $productFilter;
 
-    public function __construct(ProductFilter $productFilter)
+    public function all($request = null)
     {
-        $this->productFilter = $productFilter;
-    }
+        if ($request) {
+            $query = Product::query();
 
-    public function all($request)
-    {
+            // Search
+            $search = new ApiSearch(
+                searchableFields: ['name', 'description', 'sku'],
+                columnMap: [
+                    'name' => 'name',
+                    'description' => 'description',
+                    'sku' => 'sku',
+                ]
+            );
 
-        $query = Product::query();
-        $query = $this->productFilter->apply($query);
+            $query = $search->apply($request, $query) ?? $query;
 
-        if ($query->count() === 0) {
-            return response()->json([
-                'message' => 'No products match the given criteria.',
-            ], 404);
+            // Sort
+
+            $sort = new ApiSort(
+                allowedSorts: ['name_asc', 'name_desc', ],
+                columnMap: [
+                    'name' => 'name',
+
+                ]
+            );
+
+            $query = $sort->apply($request, $query) ?? $query;
+
+            return ProductResource::collection($query->paginate(10)->appends($request->query()));
+
         }
 
-        Log::info('Fetching filtered products.');
-
-        $products = $query->paginate(
-            10,
-            ['*'],
-            'page',
-            $request->get('page', 1)
-        );
-
-        return ProductPaginateResource::collection($products);
-    }
-
-    public function getProducts()
-    {
-
-        if (! Product::all()) {
-            return 'No products found';
-        }
         Log::info('Fetching all products without filters.');
+        $products = Product::paginate(10);
 
-        return ProductResource::collection(Product::all());
+        return ProductResource::collection($products);
+
     }
 
     public function find($id)

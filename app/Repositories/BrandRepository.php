@@ -25,10 +25,8 @@ class BrandRepository implements BaseRepository
 
     public function allBrands($request = null)
     {
-
-
         if ($request) {
-            
+
             $query = Product::query();
 
             // Search
@@ -47,7 +45,6 @@ class BrandRepository implements BaseRepository
                 allowedSorts: ['name_asc','name_desc'],
                 columnMap: [
                     'name' => 'name',
-
                 ]
             );
 
@@ -58,7 +55,7 @@ class BrandRepository implements BaseRepository
         }
 
         Log::info('Fetching all brands without filters');
-        $brand = Brand::paginate(10);
+        $brand = Brand::query()->paginate(10);
 
         return BrandResource::collection($brand);
 
