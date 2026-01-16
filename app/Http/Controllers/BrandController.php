@@ -21,7 +21,7 @@ class BrandController extends Controller
 
     public function index(Request $request)
     {
-        return $this->brandRepository->allBrands($request);
+        return $this->brandRepository->all($request);
     }
 
     public function getBrandNames()

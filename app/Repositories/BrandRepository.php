@@ -16,10 +16,37 @@ class BrandRepository implements BaseRepository
     public function all($request = null)
     {
         $request->validate([
-            'order_by' => 'sometimes|in:asc,desc',
-            'country_id' => 'sometimes|exists:countries,id',
-            'page' => 'sometimes|integer|min:1',
+            'search' => 'sometimes|integer|min:1',
+            'sort' => 'sometimes|in:id',
+            'order' => 'sometimes|in:asc,desc',
+            'per_page' => 'sometimes|integer|min:1|max:100',
         ]);
+
+        $allowedSorts = ['id','name','email','created_at'];
+
+        $query = Brand::query();
+
+        // Search
+        if ($request->has('search')) {
+            $query->where(function ($que) use ($request) {
+                $que->where('name', $request->query('search'))
+                    ->orWhere('description', $request->query('search'));
+
+            });
+        }
+        //Sort
+        if($request->has('sort')){
+           if(in_array($request->query('sort'), $allowedSorts)){
+               $order = $request->query('order', 'asc');
+               $query->orderBy($request->query('sort'), $order);
+           }
+        }
+
+
+        //return paginated results
+
+        $perPage = $request->query('per_page', 10);
+        return BrandResource::collection($query->paginate($perPage)->appends($request->query()));
 
     }
 
@@ -42,7 +69,7 @@ class BrandRepository implements BaseRepository
 
             // Sort
             $sort = new ApiSort(
-                allowedSorts: ['name_asc','name_desc'],
+                allowedSorts: ['name_asc', 'name_desc'],
                 columnMap: [
                     'name' => 'name',
                 ]
