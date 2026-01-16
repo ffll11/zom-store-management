@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use App\Repositories\BrandRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -52,15 +54,24 @@ class BrandController extends Controller
         return $this->brandRepository->find($id);
     }
 
-    public function update(UpdateBrandRequest $request, $id)
+    public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        $changedData = collect($request->validated())->filter()->all();
-        Log::info('Updating brand ID: '.$id.' with data: '.json_encode($changedData));
 
-        return $this->brandRepository->update($id, $changedData);
+        try{
+
+        $brand = $this->brandRepository->update($brand->id, $request->validated());
+
+        return new BrandResource($brand);
+
+        } catch (ModelNotFoundException $e) {
+
+            Log::error('Error updating brand with id '.$brand->id.': '.$e->getMessage());
+
+            return response()->json(['error' => 'Failed to update brand'], 500);
+        }
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         // Use gate and policy
 
