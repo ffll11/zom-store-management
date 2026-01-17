@@ -26,31 +26,32 @@ class AdminController extends Controller
         $this->roleRepository = $roleRepository;
     }
 
-    public function getUsers(Request $request)
+    public function index(Request $request)
     {
         return $this->userRepository->all($request);
     }
 
-    public function createUser(Request $request)
+    public function show(Request $request, $id)
+    {
+        return $this->userRepository->find($id);
+    }
+
+    public function create(Request $request)
     {
         return $this->userRepository->create($request->all());
     }
 
-    public function updateUser(Request $request, $id)
+    public function update(Request $request, $id)
     {
         return $this->userRepository->update($id, $request->all());
     }
 
-    public function deleteUser(Request $request, $id)
+    public function delete(Request $request, $id)
 
     {
         $this->authorize('delete', User::class);
-        
+
         return $this->userRepository->delete($id);
     }
 
-    public function getAllProducts(Request $request)
-    {
-        return $this->productRepository->all($request);
-    }
 }

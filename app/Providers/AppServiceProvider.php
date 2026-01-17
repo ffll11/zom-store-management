@@ -31,8 +31,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        Gate::define('manage-products', function ($user) {
-            return in_array($user->role_id, [1, 2, 3]);
+        Gate::define('manage-products', function (User$user) {
+            return $user->canManageProducts();
+        });
+
+        Gate::define('manage-brands', function (User $user) {
+            return $user->canManageBrands();
         });
 
         Gate::define('access-admin', function (User $user) {

@@ -48,3 +48,4 @@ Route::apiResource('roles', \App\Http\Controllers\RoleController::class);
 Route::get('brand-names', [\App\Http\Controllers\BrandController::class, 'getBrandNames']);
 Route::get('countries', [\App\Http\Controllers\BrandController::class, 'getCountry']);
 Route::get('subfamily-names', [\App\Http\Controllers\SubfamilyController::class, 'getSubfamilyNames']);
+

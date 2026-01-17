@@ -54,4 +54,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function canManageProducts()
+    {
+        return in_array($this->role_id, [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_STAFF]);
+    }
+
+    public function canManageBrands()
+    {
+        return in_array($this->role_id, [self::ROLE_ADMIN, self::ROLE_MANAGER]);
+    }
 }
